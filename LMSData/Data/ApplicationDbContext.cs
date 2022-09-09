@@ -6,7 +6,7 @@ using LMS.Core.Entities;
 
 namespace LMS.Data.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -17,6 +17,6 @@ namespace LMS.Data.Data
         public DbSet<LMS.Core.Entities.Course>? Course { get; set; }
         public DbSet<LMS.Core.Entities.Document>? Document { get; set; }
         public DbSet<LMS.Core.Entities.Module>? Module { get; set; }
-        public DbSet<LMS.Core.Entities.User>? User { get; set; }
+       // public DbSet<LMS.Core.Entities.User>? User { get; set; }
     }
 }
