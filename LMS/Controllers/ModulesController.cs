@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data;
+using LMS.Data.Data;
 
 namespace LMS.Web.Controllers
 {

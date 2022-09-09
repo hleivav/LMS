@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 
-namespace LMS.Data
+
+namespace LMS.Data.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

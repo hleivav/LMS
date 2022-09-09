@@ -1,4 +1,4 @@
-using LMS.Data;
+using LMS.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
