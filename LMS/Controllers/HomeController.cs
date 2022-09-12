@@ -15,8 +15,20 @@ namespace LMS.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Student"))
+                return View(); 
+                //return RedirectToPage("/Home/IndexStudent.cshtml");
+            return RedirectToAction(nameof(IndexTeacher));
         }
+
+
+        public IActionResult IndexTeacher()
+        {
+
+            return View();
+
+        }
+
 
         public IActionResult Privacy()
         {
