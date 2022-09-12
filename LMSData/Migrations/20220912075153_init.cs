@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LMS.Data.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,7 @@ namespace LMS.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StarDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -116,9 +116,9 @@ namespace LMS.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StarDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: true)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +127,8 @@ namespace LMS.Data.Migrations
                         name: "FK_Module_Course_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Course",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,7 +224,7 @@ namespace LMS.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StarDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
                     ActivityTypeId = table.Column<int>(type: "int", nullable: false)

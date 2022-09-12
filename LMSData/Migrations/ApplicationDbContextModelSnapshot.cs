@@ -47,7 +47,7 @@ namespace LMS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StarDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -94,7 +94,7 @@ namespace LMS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StarDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -155,7 +155,7 @@ namespace LMS.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -167,7 +167,7 @@ namespace LMS.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StarDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -439,7 +439,9 @@ namespace LMS.Data.Migrations
                 {
                     b.HasOne("LMS.Core.Entities.Course", "Course")
                         .WithMany("Modules")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
                 });
