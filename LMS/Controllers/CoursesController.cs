@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data.Data;
 using Microsoft.AspNetCore.Authorization;
+using LMS.Core.Entities.ViewModels;
 
 namespace LMS.Web.Controllers
 {
@@ -15,6 +16,7 @@ namespace LMS.Web.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private Task<string?> indexViewModel;
 
         public CoursesController(ApplicationDbContext context)
         {
@@ -166,22 +168,57 @@ namespace LMS.Web.Controllers
         public async Task<IActionResult> IndexStudent()
         {
             
-            var result = _context.Course.ToListAsync();
+            var resCourse = await _context.Course.Include(g=>g.Users).ToListAsync();
+            var resUser = await _context.Users.ToListAsync();
+            var resModule = await _context.Module.ToListAsync();
+            var resActivity = await _context.Activity.ToListAsync();
+            var resActivityType = await _context.ActivityType.ToListAsync();
+
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfCourses = resCourse,
+                ListOfUsers = resUser,
+                ListOfModules = resModule,
+                ListOfActivity = resActivity,
+                ListOfActivityType = resActivityType
+
+            };
+            
             if (User.IsInRole("Student"))
-
+            {
                 
+                return View(indexViewModel);
 
-                return View(await result);
+            }
+
+
             //return RedirectToPage("/Home/IndexStudent.cshtml");
-            return  RedirectToAction(nameof(IndexTeacher),await result);
+            return  View(nameof(IndexTeacher), indexViewModel);
         }
 
 
         public async Task<IActionResult> IndexTeacher()
         {
-          var result= _context.Course.Include(g=>g.Users).ToListAsync();
+
+            var resCourse = await _context.Course.Include(g => g.Users).ToListAsync();
+            var resUser = await _context.Users.ToListAsync();
+            var resModule = await _context.Module.ToListAsync();
+            var resActivity = await _context.Activity.ToListAsync();
+            var resActivityType = await _context.ActivityType.ToListAsync();
+
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfCourses = resCourse,
+                ListOfUsers = resUser,
+                ListOfModules = resModule,
+                ListOfActivity = resActivity,
+                ListOfActivityType = resActivityType
+
+            };
+
+            
             return _context.Course != null ?
-                          View(await result) :
+                          View(indexViewModel) :
                           Problem("Entity set 'ApplicationDbContext.Course'  is null.");
 
         }

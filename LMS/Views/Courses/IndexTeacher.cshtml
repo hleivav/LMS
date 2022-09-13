@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<LMS.Core.Entities.Course>
+@*@model IEnumerable<LMS.Core.Entities.Course>*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,49 +8,7 @@
 <div class="text-center">
     <h1 class="display-4">Welcome Teacher</h1>
 
-@*    <div class="btn-group" role="group" aria-label="Basic example">  
-        <button type="sub" class="btn btn-secondary" asp-controller="Courses" asp-action="Index">Student</button>  
-        <a asp-action="Index" type="button" class="btn btn-success me-2" style="font-weight: bold">REGISTER NEW VEHICLE</a></div>
-        <button type="button" class="btn btn-secondary">Teachers</button>  
-        <button type="button" class="btn btn-secondary">Courses</button>
-    </div>*@
 
-@*    <form asp-controller="Courses" asp-action="Index">
-               <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
-               <div class="form-group pt-5">
-                <input type="submit" value="Student" class="btn btn-primary" />
-               </div>
-    </form>*@
-
-
-@*<div class="row pb-5">
-
-    <div class="col-4">
-        <form asp-controller="Courses" asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
-            <div class="form-group pt-5">
-            <input type="submit" value="Students" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-    <div class="col-4">
-         <form asp-controller="Courses" asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
-            <div class="form-group pt-5">
-            <input type="submit" value="Teachers" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-    <div class="col-4">
-         <form asp-controller="Courses" asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
-            <div class="form-group pt-5">
-            <input type="submit" value="Courses" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-
-</div>*@
 
 
 
@@ -65,7 +23,8 @@
   <div class="card card-body">
         <tbody id="courses">
         
-            <partial name="_Index_Partial_Course" />
+            @*<partial name="_Index_Partial_Student" model="@Model.ListOfUsers"/>*@
+            @*<partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>*@
     </tbody>
   </div>
 </div>
