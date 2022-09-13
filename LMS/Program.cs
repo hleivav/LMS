@@ -26,8 +26,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var db = services.GetRequiredService<ApplicationDbContext>();
 
-    db.Database.EnsureDeleted();
-    db.Database.Migrate();
+    //db.Database.EnsureDeleted();
+    //db.Database.Migrate();
     var adminPW = "GetNewPassword!123";
     try
     {
@@ -64,7 +64,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Courses}/{action=IndexStudent}/{id?}");
 app.MapRazorPages();
 
 app.Run();

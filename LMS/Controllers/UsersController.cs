@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class UserssController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -164,5 +166,13 @@ namespace LMS.Web.Controllers
         {
           return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+
+
     }
+
+
+
+
 }

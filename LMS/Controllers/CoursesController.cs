@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -159,5 +161,31 @@ namespace LMS.Web.Controllers
         {
           return (_context.Course?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        public async Task<IActionResult> IndexStudent()
+        {
+            
+            var result = _context.Course.ToListAsync();
+            if (User.IsInRole("Student"))
+
+                
+
+                return View(await result);
+            //return RedirectToPage("/Home/IndexStudent.cshtml");
+            return  RedirectToAction(nameof(IndexTeacher),await result);
+        }
+
+
+        public async Task<IActionResult> IndexTeacher()
+        {
+          var result= _context.Course.Include(g=>g.Users).ToListAsync();
+            return _context.Course != null ?
+                          View(await result) :
+                          Problem("Entity set 'ApplicationDbContext.Course'  is null.");
+
+        }
+
+
     }
 }
