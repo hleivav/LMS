@@ -1,8 +1,71 @@
-﻿@{
+﻿@using LMS.Core.Entities.ViewModels
+
+@*@model IEnumerable<LMS.Core.Entities.Course>*@
+@model IndexViewModel
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Student</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div >
+    <h4 class="display-4">Welcome to Lexicon,
+        you are logged in as a Student
+        
+    </h4>
+
+ 
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View1" aria-expanded="false" aria-controls="View1">Modules</button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View2" aria-expanded="false" aria-controls="View2">Activities</button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View3" aria-expanded="false" aria-controls="View3">Students</button>
+
+    </p>
+
+
+    <div class="collapse" id="View1">
+        <div class="card card-body">
+            <tbody id="Modules">Placeholder for list of modules for logged in user.
+
+               
+              @*  <partial name="_Index_Partial_Course" model="@Model.ListOfCourses" />*@
+
+            </tbody>
+        </div>
+    </div>
+
+
+    <div class="collapse" id="View2">
+        <div class="card card-body">
+            <tbody id="Teachers">Placeholder for list of Activities for logged in user.
+                
+
+                @*<partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers" />*@
+
+            </tbody>
+        </div>
+    </div>
+
+
+    <div class="collapse" id="View3">
+        <div class="card card-body">
+            <tbody id="Teachers">
+
+                <partial name="_Index_Partial_Student" model="@Model.ListOfUsers" />
+
+            </tbody>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

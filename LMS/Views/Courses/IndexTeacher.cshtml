@@ -1,22 +1,30 @@
-﻿
+﻿@using LMS.Core.Entities.ViewModels
+
 @*@model IEnumerable<LMS.Core.Entities.Course>*@
+   @model IndexViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Teacher</h1>
+<div @*class="text-center">*@
+    @*<h2 class="display-4">Welcome to Lexicon, you are logged in as a Teacher</h2>*@
 
 
 
 
 
 <p>
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View1" aria-expanded="false" aria-controls="View1">
-    Courses
-  </button>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View1" aria-expanded="false" aria-controls="View1">Courses</button>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View2" aria-expanded="false" aria-controls="View2">Teachers</button>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View3" aria-expanded="false" aria-controls="View3">Students</button>
+
 </p>
+
+
+
+
+
 
 
 <div class="collapse" id="View1">
@@ -25,11 +33,40 @@
         
             @*<partial name="_Index_Partial_Student" model="@Model.ListOfUsers"/>*@
             @*<partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>*@
+            <partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>
+
     </tbody>
   </div>
 </div>
 
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<div class="collapse" id="View2">
+  <div class="card card-body">
+        <tbody id="Teachers">
+
+                <partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers"/>
+
+    </tbody>
+  </div>
+</div>
+
+
+<div class="collapse" id="View3">
+  <div class="card card-body">
+        <tbody id="Teachers">
+
+                <partial name="_Index_Partial_Student" model="@Model.ListOfUsers"/>
+
+    </tbody>
+  </div>
+</div>
+
+
+ 
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
