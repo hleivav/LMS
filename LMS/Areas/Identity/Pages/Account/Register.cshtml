@@ -4,13 +4,15 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+@*<h1>@ViewData["Title"]</h1>*@
 
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div class="pt-5">
             <h2>Create a new account.</h2>
             <hr />
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
@@ -36,7 +38,7 @@
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
-        <section>
+       @* <section>
             <h3>Use another service to register.</h3>
             <hr />
             @{
@@ -63,7 +65,7 @@
                     </form>
                 }
             }
-        </section>
+        </section>*@
     </div>
 </div>
 
