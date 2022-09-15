@@ -1,7 +1,11 @@
-﻿@using LMS.Core.Entities.ViewModels
+﻿@using LMS.Core.Entities
+@using LMS.Core.Entities.ViewModels
+@using Microsoft.AspNetCore.Identity
 
 @*@model IEnumerable<LMS.Core.Entities.Course>*@
 @model IndexViewModel
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 
 @{
@@ -9,49 +13,180 @@
 }
 
 <div >
-    <h4 class="display-4">Welcome to Lexicon,
+    <h5 class="display-4">Welcome to Lexicon,
         you are logged in as a Student
         
-    </h4>
+    </h5>
+     Your current course:
 
- 
-    <p>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View1" aria-expanded="false" aria-controls="View1">Modules</button>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View2" aria-expanded="false" aria-controls="View2">Activities</button>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View3" aria-expanded="false" aria-controls="View3">Students</button>
+    @{
+        var teacherId = int.Parse(@UserManager.GetUserId(User));
+        int.Parse(@UserManager.GetUserId(User));
+        var courseId = @Model.ListOfUsers[teacherId].CourseId;
 
-    </p>
+        var currentUserCorse = @Model.ListOfCourses[courseId.Value-1].Name; //List is indexed from 0 while datatable is indexed from 1
+        var start = @Model.ListOfCourses[courseId.Value - 1].StartDate;
+        var end = @Model.ListOfCourses[courseId.Value - 1].EndDate;
 
+         }
+    @Html.DisplayFor(model => currentUserCorse) <br />
+    @Html.DisplayFor(model => start) to @Html.DisplayFor(model => end)
+    <br /><br />
 
-    <div class="collapse" id="View1">
-        <div class="card card-body">
-            <tbody id="Modules">Placeholder for list of modules for logged in user.
+    @if (start>DateTime.Now | end<DateTime.Now){ <p>You have no modules at present</p> }
+    else
+    {
+    
+   
+                <p>Your current module:</p>
 
-               
-              @*  <partial name="_Index_Partial_Course" model="@Model.ListOfCourses" />*@
-
-            </tbody>
-        </div>
-    </div>
-
-
-    <div class="collapse" id="View2">
-        <div class="card card-body">
-            <tbody id="Teachers">Placeholder for list of Activities for logged in user.
+        @foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)
+        {
+            @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+            {
+                <tr>
+                 <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                 </td>
+                    <br />
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    to
+                 <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                 </td>
                 
 
-                @*<partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers" />*@
+                </tr>
+            }
+        }   
+    
+    
+    <br /><br />
 
-            </tbody>
-        </div>
-    </div>
+
+        <p>Your current Activity: </p>
+
+
+        @foreach (var item in Model.ListOfActivity)
+        {
+            @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+            {
+                <tr>
+                    <td>
+                     @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <br/>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    to
+                    <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                
+
+                </tr>
+               
+
+                    <br/>
+
+                    <br/>
+           
+                    <td>
+                    @Html.DisplayFor(modelItem => item.ActivityType.Name)
+                    </td>
+            }
+       
+        }
+    
+            <br /><br />
+     
+     }
+     
+     
+     
+     
+     
+     
+     
+     
+     
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View1" aria-expanded="false" aria-controls="View1">Modules</button>
+        
+             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#View3" aria-expanded="false" aria-controls="View3">Students</button>
+
+            </p>
+
+
+            <div class="collapse" id="View1">
+                <div class="card card-body">
+                    <tbody id="Modules">
+
+                        @foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)
+                        {
+                   
+                            {
+                                <tr>
+                                    <td>
+                                     @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                     <br>    
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    to
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                    </td>
+                            <br>
+                            <br>
+
+                                </tr>
+                            }
+                        }
+             
+
+                    </tbody>
+                </div>
+            </div>
+
+
+   
 
 
     <div class="collapse" id="View3">
         <div class="card card-body">
-            <tbody id="Teachers">
+            <tbody id="Students">
 
-                <partial name="_Index_Partial_Student" model="@Model.ListOfUsers" />
+
+                @foreach (var item in Model.ListOfUsers)
+                {
+                    if (item.CourseId == courseId)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <br>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                           
+                            <br>
+                            <br>
+
+                        </tr>
+                    }
+                }
+               
+                
+                
+                
+                
+                @* <partial name="_Index_Partial_Student" model="@Model.ListOfUsers" />*@
 
             </tbody>
         </div>
