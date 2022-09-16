@@ -1,44 +1,227 @@
-﻿@using LMS.Core.Entities.ViewModels
+﻿@using LMS.Core.Entities
+@using LMS.Core.Entities.ViewModels
+@using Microsoft.AspNetCore.Identity
+
+@*@model IEnumerable<LMS.Core.Entities.Course>*@
 @model IndexViewModel
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center pt-5">
-    <h2>Welcome to Lexicon,you are logged in as a Student</h2>
-</div>
+<div >
+    <h4 class="display-4">Welcome to Lexicon,
+        you are logged in as a Student 
+        
+    </h4>
+     Your current course:
 
-<div class="text-center pt-5">
+    @{
+        var teacherId = int.Parse(@UserManager.GetUserId(User));
+        int.Parse(@UserManager.GetUserId(User));
+        var courseId = @Model.ListOfUsers[teacherId].CourseId;
+
+        var currentUserCorse = @Model.ListOfCourses[courseId.Value-1].Name; //List is indexed from 0 while datatable is indexed from 1
+        var start = @Model.ListOfCourses[courseId.Value - 1].StartDate;
+        var end = @Model.ListOfCourses[courseId.Value - 1].EndDate;
+
+         }
+    @Html.DisplayFor(model => currentUserCorse) <br />
+    @Html.DisplayFor(model => start) to @Html.DisplayFor(model => end)
+    <br /><br />
+
+    @if (start>DateTime.Now | end<DateTime.Now){ <p>You have no modules at present</p> }
+    else
+    {
+    
+   
+                <p>Your current module:</p>
+
+        @foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)
+        {
+            @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+            {
+                <tr>
+                 <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                 </td>
+                    <br />
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    to
+                 <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                 </td>
+                
+
+                </tr>
+            }
+        }   
+    
+    
+    <br /><br />
+
+
+        <p>Your current Activity: </p>
+
+
+        @foreach (var item in Model.ListOfActivity)
+        {
+            @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+            {
+                <tr>
+                    <td>
+                     @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <br/>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    to
+                    <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                
+
+                </tr>
+               
+
+                    <br/>
+
+                    <br/>
+           
+                    <td>
+                    @Html.DisplayFor(modelItem => item.ActivityType.Name)
+                    </td>
+            }
+       
+        }
+    
+            <br /><br />
+     
+     }
+     
+     
+     
+     
+     
+     
+     
+    
+
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Modules</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> Activities</button>
+    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> Teachers</button>
     <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students</button>
-    
+   
   </div>
 </nav>
 
-<div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-      This is some placeholder content the Home tab's associated content. 
-      Clicking another tab will toggle the visibility of this one for the next.
-      The tab JavaScript swaps classes to control the content visibility and styling.
-      You can use it with tabs, pills, and any other .nav-powered navigation.
-      @*<partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>*@
-  </div>
-  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-      This is some placeholder content the Home tab's associated content. 
-      Clicking another tab will toggle the visibility of this one for the next.
-      The tab JavaScript swaps classes to control the content visibility and styling.
-      You can use it with tabs, pills, and any other .nav-powered navigation.
-      @*<partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers"/>*@
-  </div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-    <partial name="_Index_Partial_Student"  model="@Model.ListOfUsers"/>
-  </div>
-</div>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
 
-</div>
+
+
+            @foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)
+            {
+
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <br>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        to
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <br>
+                        <br>
+
+                    </tr>
+                }
+            }
+            
+            
+            
+           
+        </div>
+
+
+
+
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+           @* <partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers" />*@
+       Placeholder for teachers
+       
+       
+       </div>
+        
+        
+       
+        
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+
+
+
+            @foreach (var item in Model.ListOfUsers)
+            {
+                
+                if (item.CourseId == courseId) 
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <br>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                        <br>
+                        <br>
+
+                    </tr>
+                }
+            }
+
+
+            
+        </div>
+    </div>
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
