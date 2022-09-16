@@ -1,14 +1,15 @@
-﻿@model LMS.Core.Entities.Course
-
+﻿@*@model LMS.Core.Entities.Course*@
+@model LMS.Core.Entities.ViewModels.CoursesViewModel
 @{
     ViewData["Title"] = "Details";
 }
+<div class="pt-5">
+  <h3>Course Details</h3>
+</div>
 
-<h1>Details</h1>
 
 <div>
-    <h4>Course</h4>
-    <hr />
+   <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -36,7 +37,10 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+<partial name="_Index_Partial_Details"/>
+ 
+ 
+
+<div class="pt-5">
     <a asp-action="IndexTeacher">Back to List</a>
 </div>
