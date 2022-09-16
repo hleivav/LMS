@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LMS.Core.Entities.ViewModels
 {
-    internal class UserViewModel
+    public class UserViewModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
