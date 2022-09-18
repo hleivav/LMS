@@ -9,6 +9,7 @@ using LMS.Core.Entities;
 using LMS.Data.Data;
 using Microsoft.AspNetCore.Authorization;
 using LMS.Core.Entities.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS.Web.Controllers
 {
@@ -17,10 +18,11 @@ namespace LMS.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private Task<string?> indexViewModel;
-
-        public CoursesController(ApplicationDbContext context)
+        private readonly UserManager<User> userManager;
+        public CoursesController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Courses
@@ -169,7 +171,8 @@ namespace LMS.Web.Controllers
         {
             
             var resCourse = await _context.Course.Include(g=>g.Users).ToListAsync();
-            var resUser = await _context.Users.ToListAsync();
+            var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
@@ -177,7 +180,8 @@ namespace LMS.Web.Controllers
             var indexViewModel = new IndexViewModel()
             {
                 ListOfCourses = resCourse,
-                ListOfUsers = resUser,
+                ListOfTeachers = (List<User>)resTeacher,
+                ListOfStudents= (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
                 ListOfActivityType = resActivityType
@@ -201,7 +205,8 @@ namespace LMS.Web.Controllers
         {
 
             var resCourse = await _context.Course.Include(g => g.Users).ToListAsync();
-            var resUser = await _context.Users.ToListAsync();
+            var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
@@ -209,10 +214,12 @@ namespace LMS.Web.Controllers
             var indexViewModel = new IndexViewModel()
             {
                 ListOfCourses = resCourse,
-                ListOfUsers = resUser,
+                ListOfTeachers = (List<User>)resTeacher,
+                ListOfStudents = (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
                 ListOfActivityType = resActivityType
+
 
             };
 

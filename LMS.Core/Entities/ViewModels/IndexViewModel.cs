@@ -10,7 +10,8 @@ namespace LMS.Core.Entities.ViewModels
 
     {
         public List<Course> ListOfCourses { get; set; }
-        public List<User> ListOfUsers { get; set; }
+        public List<User> ListOfTeachers { get; set; }
+        public List<User> ListOfStudents { get; set; }
         public List<Module> ListOfModules { get; set; }
         public List<Activity> ListOfActivity { get; set; }
         public List<ActivityType> ListOfActivityType { get; set; }

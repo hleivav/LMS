@@ -1,10 +1,7 @@
 ﻿@using LMS.Core.Entities
 @using LMS.Core.Entities.ViewModels
 @using Microsoft.AspNetCore.Identity
-
-@*@model IEnumerable<LMS.Core.Entities.Course>*@
 @model IndexViewModel
-@inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
 
@@ -13,16 +10,17 @@
 }
 
 <div >
-    <h4 class="display-4">Welcome to Lexicon,
+    <h5 class="display-4">Welcome to Lexicon,
         you are logged in as a Student 
         
-    </h4>
+    </h5>
      Your current course:
+  
 
     @{
-        var teacherId = int.Parse(@UserManager.GetUserId(User));
+        var studentId = int.Parse(@UserManager.GetUserId(User));
         int.Parse(@UserManager.GetUserId(User));
-        var courseId = @Model.ListOfUsers[teacherId].CourseId;
+        var courseId = @Model.ListOfStudents[studentId].CourseId;
 
         var currentUserCorse = @Model.ListOfCourses[courseId.Value-1].Name; //List is indexed from 0 while datatable is indexed from 1
         var start = @Model.ListOfCourses[courseId.Value - 1].StartDate;
@@ -30,7 +28,7 @@
 
          }
     @Html.DisplayFor(model => currentUserCorse) <br />
-    @Html.DisplayFor(model => start) to @Html.DisplayFor(model => end)
+    @Html.DisplayFor(model => @Model.ListOfCourses[courseId.Value - 1].StartDate) to @Html.DisplayFor(model =>  @Model.ListOfCourses[courseId.Value - 1].EndDate)
     <br /><br />
 
     @if (start>DateTime.Now | end<DateTime.Now){ <p>You have no modules at present</p> }
@@ -160,8 +158,27 @@
 
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
            @* <partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers" />*@
-       Placeholder for teachers
-       
+
+            @foreach (var item in Model.ListOfTeachers)
+            {
+
+               
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <br>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                        <br>
+                        <br>
+
+                    </tr>
+                
+            }
+
        
        </div>
         
@@ -172,7 +189,7 @@
 
 
 
-            @foreach (var item in Model.ListOfUsers)
+            @foreach (var item in Model.ListOfStudents)
             {
                 
                 if (item.CourseId == courseId) 
@@ -200,12 +217,30 @@
 
     
   
+@*
+    <span>
+        <h2>Upload Document</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <table>
+                <td>
+                    <label for="file">Filename</label>
+                </td>
+                <td>
+                    <input type="file" name="file" id="file" />
+                </td>
+                <td>
+                    <input type="submit" value="Upload" />
+                </td>
+            </table>
+        </form>
+    </span>*@
 
 
 
-
-
-
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Fil att läsa</label>
+        <input class="form-control" type="file" id="formFile">
+    </div>
 
 
 
