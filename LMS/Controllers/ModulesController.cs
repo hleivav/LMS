@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data;
 using LMS.Data.Data;
+using Microsoft.AspNetCore.Identity;
+using LMS.Core.Entities.ViewModels;
 
 namespace LMS.Web.Controllers
 {
     public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private static UserManager<User> userManager = default;
 
         public ModulesController(ApplicationDbContext context)
         {
             _context = context;
+           
         }
 
         // GET: Modules
@@ -55,18 +59,25 @@ namespace LMS.Web.Controllers
         // POST: Modules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StarDate,EndDate")] Module @module)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(@module);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(@module);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(/*[Bind("Id,ModuleName,ModuleDescription,ModuleStarDate,ModuleEndDate")]*/ CoursesViewModel @module)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var myModule=new Module();
+        //        myModule.CourseId = @module.Id;
+        //        myModule.StartDate = @module.StartDate;
+        //        myModule.EndDate = @module.EndDate;
+        //        myModule.Description = @module.Description;
+        //        myModule.Name = @module.Name;
+        //        _context.Module.Add(myModule);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    //return View(@module);
+        //    return RedirectToAction(nameof(Details), "Courses", new { id = module.Id});
+        //}
 
         // GET: Modules/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -1,46 +1,103 @@
 ﻿@model LMS.Core.Entities.ViewModels.CoursesViewModel
-<div class="text-center pb-5">
-  <h3>Modules</h3>
-</div>
-  <div class="row pb-3">
-      <div class="col float-start">
-      <button class="btn btn-primary" type="submit">New Module</button>
+
+<div class="row pb-3">
+    <div class="col float-start">
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
+           New Module
+          </button>
+          
+       <div class="collapse" id="createModule">
+          <div class="card card-body">         
+              <div class="card" style="width: 18rem;">
+                  <div class="card-body">     
+                      <div class="row">
+                         <div class="col">
+                           <form asp-controller="Courses" asp-action="CreateModule">
+                               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                               <input type="hidden" asp-for="@Model.Id" />
+                                  <div class="form-group">
+                                     <label asp-for="ModuleName" class="control-label"></label>
+                                     <input asp-for="@Model.ModuleName" class="form-control" />
+                                     <span asp-validation-for="@Model.ModuleName" class="text-danger"></span>
+                                  </div>
+                                  <div class="form-group">
+                                    <label asp-for="ModuleDescription" class="control-label"></label>
+                                    <input asp-for="@Model.ModuleDescription" class="form-control" />
+                                    <span asp-validation-for="@Model.ModuleDescription" class="text-danger"></span>
+                                    </div>
+                                 <div class="form-group">
+                                   <label asp-for="ModuleStartDate" class="control-label"></label>
+                                   <input asp-for="@Model.ModuleStartDate" class="form-control" />
+                                   <span asp-validation-for="@Model.ModuleStartDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label asp-for="ModuleEndDate" class="control-label"></label>
+                                  <input asp-for="@Model.ModuleEndDate" class="form-control" />
+                                  <span asp-validation-for="@Model.ModuleEndDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group pt-3">
+                                  <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                         </form>
+                        </div>
+                      </div>                   
+                  </div>
+              </div>
+          </div>
+         </div>
+       </div>
      </div>
-  </div>
+     
+     <div class="text-center pb-5">
+  <h3>Modules And Related Activities </h3>
+</div>
+  
 @{
     int i = 1;
-    string str= "iOne";
-    //string str = "iOne" ;//+ i.ToString();
-    //string g = "#"+str;
+    string str= "iOne";    
 }
-   <div class="accordion" id="accordionExample">
-   @foreach (var item in Model.listOfModules)
+
+<div class="accordion" id="accordionExample">
+   @foreach (var moduleName in Model.listOfModules)
     {
         str += i.ToString();
         <div class="accordion" id="accordionExample">  
           <div class="accordion-item">
              <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
-              @Html.DisplayFor(modelItem => item.Name)
+              @Html.DisplayFor(modelItem => moduleName.Name)
                </button>
              </h2>
           <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
               <div class="row">
-                  <div class="col">
-              <strong>ID: @Html.DisplayFor(modelItem => item.Id)</strong> <br>
-              <strong>Name: </strong>@Html.DisplayFor(modelItem => item.Name)<br>
-              <strong>Start Date: </strong>@Html.DisplayFor(modelItem => item.StartDate)<br>
-              <strong>End date: </strong>@Html.DisplayFor(modelItem => item.EndDate)<br>
-              <strong>Description: </strong>@Html.DisplayFor(modelItem => item.Description)<br>
-              </div>
+                  <div class="col-6">
+                      <div class="text-center"> <strong>Module</strong></div>
+                    @*<strong>MODULEID: @Html.DisplayFor(modelItem => moduleName.Id)</strong> <br>*@
+                    <strong>Name: </strong>@Html.DisplayFor(modelItem => moduleName.Name)<br>
+                    <strong>Start Date: </strong>@Html.DisplayFor(modelItem => moduleName.StartDate)<br>
+                    <strong>End date: </strong>@Html.DisplayFor(modelItem => moduleName.EndDate)<br>
+                    <strong>Description: </strong>@Html.DisplayFor(modelItem => moduleName.Description)<br>                   
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center"> <strong>Activities</strong></div>
+                    @foreach (var activity in Model.ListOfActivity)
+                    {
+                        if(activity.ModuleId == moduleName.Id){                      
+                         <a href="#" data-bs-placement="top"  data-bs-html="true" data-bs-toggle="tooltip"
+                         title="<div>ActivivyType: @activity.ActivityTypeId<br>@activity.StartDate<br>@activity.EndDate<br> @activity.Description</div>"> @activity.Name</a><br>
+                        }
+                    }
+                   </div>
               </div>
               <div class="row">
-                  <div class="col">
-              <div class="float-end">
-              <button class="btn btn-primary" type="submit">Edit</button>
-              </div>
-              </div>
+                  <div class="col-6">
+                     <div class="float-start">
+                       <button class="btn btn-primary" type="submit">Edit</button>
+                     </div>
+                     <div class="col-6">
+                     </div>
+               </div>
           </div>
           </div>
        </div>
@@ -49,5 +106,13 @@
         i++;
     }
   </div>
+
    
+  <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+  </script>
+  
   
