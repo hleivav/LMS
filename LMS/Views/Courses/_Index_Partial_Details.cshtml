@@ -1,0 +1,53 @@
+﻿@model LMS.Core.Entities.ViewModels.CoursesViewModel
+<div class="text-center pb-5">
+  <h3>Modules</h3>
+</div>
+  <div class="row pb-3">
+      <div class="col float-start">
+      <button class="btn btn-primary" type="submit">New Module</button>
+     </div>
+  </div>
+@{
+    int i = 1;
+    string str= "iOne";
+    //string str = "iOne" ;//+ i.ToString();
+    //string g = "#"+str;
+}
+   <div class="accordion" id="accordionExample">
+   @foreach (var item in Model.listOfModules)
+    {
+        str += i.ToString();
+        <div class="accordion" id="accordionExample">  
+          <div class="accordion-item">
+             <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
+              @Html.DisplayFor(modelItem => item.Name)
+               </button>
+             </h2>
+          <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+              <div class="row">
+                  <div class="col">
+              <strong>ID: @Html.DisplayFor(modelItem => item.Id)</strong> <br>
+              <strong>Name: </strong>@Html.DisplayFor(modelItem => item.Name)<br>
+              <strong>Start Date: </strong>@Html.DisplayFor(modelItem => item.StartDate)<br>
+              <strong>End date: </strong>@Html.DisplayFor(modelItem => item.EndDate)<br>
+              <strong>Description: </strong>@Html.DisplayFor(modelItem => item.Description)<br>
+              </div>
+              </div>
+              <div class="row">
+                  <div class="col">
+              <div class="float-end">
+              <button class="btn btn-primary" type="submit">Edit</button>
+              </div>
+              </div>
+          </div>
+          </div>
+       </div>
+    </div>  
+        </div>
+        i++;
+    }
+  </div>
+   
+  

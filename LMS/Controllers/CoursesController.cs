@@ -43,12 +43,25 @@ namespace LMS.Web.Controllers
 
             var course = await _context.Course
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var module = _context.Module
+             .Where(v => v.CourseId == id)
+             .ToList();
+
+            CoursesViewModel coursesViewModel = new CoursesViewModel()
+            {
+                Id = (int)id,
+                listOfModules = module,
+                Name = course.Name,
+                Description = course.Description,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
             if (course == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(coursesViewModel);
         }
 
         // GET: Courses/Create
@@ -82,7 +95,9 @@ namespace LMS.Web.Controllers
             }
 
             var course = await _context.Course.FindAsync(id);
-            if (course == null)
+           
+            
+           if (course == null)
             {
                 return NotFound();
             }
