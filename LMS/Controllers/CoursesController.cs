@@ -191,6 +191,7 @@ namespace LMS.Web.Controllers
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
+            var resUsers= await _context.Users.ToListAsync();
 
             var indexViewModel = new IndexViewModel()
             {
@@ -199,8 +200,8 @@ namespace LMS.Web.Controllers
                 ListOfStudents= (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
-                ListOfActivityType = resActivityType
-
+                ListOfActivityType = resActivityType,
+                ListOfUsers =resUsers
             };
             
             if (User.IsInRole("Student"))
@@ -225,6 +226,7 @@ namespace LMS.Web.Controllers
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
+            var resUsers = await _context.Users.ToListAsync();
 
             var indexViewModel = new IndexViewModel()
             {
@@ -233,7 +235,8 @@ namespace LMS.Web.Controllers
                 ListOfStudents = (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
-                ListOfActivityType = resActivityType
+                ListOfActivityType = resActivityType,
+                ListOfUsers = resUsers
 
 
             };
