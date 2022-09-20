@@ -14,13 +14,17 @@
         you are logged in as a Student 
         
     </h5>
-     Your current course:
-  
+    Your current course:                              
+
 
     @{
         var studentId = int.Parse(@UserManager.GetUserId(User));
         int.Parse(@UserManager.GetUserId(User));
-        var courseId = @Model.ListOfStudents[studentId].CourseId;
+        var courseId = @Model.ListOfUsers[studentId].CourseId; /*var courseId = @Model.ListOfStudents[studentId].CourseId;*/
+
+
+      
+
 
         var currentUserCorse = @Model.ListOfCourses[courseId.Value-1].Name; //List is indexed from 0 while datatable is indexed from 1
         var start = @Model.ListOfCourses[courseId.Value - 1].StartDate;
