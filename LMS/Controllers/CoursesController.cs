@@ -93,32 +93,50 @@ namespace LMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateModule(/*[Bind("Id,ModuleName,ModuleDescription,ModuleStarDate,ModuleEndDate")]*/ CoursesViewModel viewModel)
+        public async Task<IActionResult> CreateModule(CoursesViewModel viewModel)
         {
+           CoursesViewModel coursesViewModel=null;
             if (ModelState.IsValid)
             {
-                //var myModule = new Module();
-                //myModule.CourseId = @module.Id;
-                //myModule.StartDate = @module.StartDate;
-                //myModule.EndDate = @module.EndDate;
-                //myModule.Description = @module.Description;
-                //myModule.Name = @module.Name;
-
                 var module2 = new Module
                 {
                     CourseId = viewModel.Id,
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-                    StartDate = viewModel.StartDate,
-                    EndDate = viewModel.EndDate
-
+                    Name = viewModel.ModuleName,
+                    Description = viewModel.ModuleDescription,
+                    StartDate = viewModel.ModuleStartDate,
+                    EndDate = viewModel.ModuleEndDate                  
                 };
                 _context.Module.Add(module2);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), new { id = viewModel.Id });
+                TempData["Message"] = "Module \""+ viewModel.ModuleName+"\" Added ";
+                return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
             }
-            //return View(@module);
-            return View(nameof(Details));
+
+            if (!ModelState.IsValid)
+            {
+                var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == viewModel.Id);
+                var resActivity = await _context.Activity.ToListAsync();
+                var resActivityType = await _context.ActivityType.ToListAsync();
+
+                var module = _context.Module
+                 .Where(v => v.CourseId == viewModel.Id)
+                 .ToList();
+
+                 coursesViewModel = new CoursesViewModel()
+                {
+                    Id = (int)viewModel.Id,
+                    listOfModules = module,
+                    ListOfActivity = resActivity,
+                    ListOfActivityType = resActivityType,
+                    Name = course.Name,
+                    Description = course.Description,
+                    StartDate = course.StartDate,
+                    EndDate = course.EndDate                   
+                };
+             TempData["Message"] = "Not Added ";
+             }
+
+            return View("Details",coursesViewModel);
         }
 
         // GET: Courses/Edit/5

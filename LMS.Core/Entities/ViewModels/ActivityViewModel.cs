@@ -16,5 +16,6 @@ namespace LMS.Core.Entities.ViewModels
 
         public int ModuleId { get; set; }
         public int ActivityTypeId { get; set; }
+        public List<ActivityType> ListOfActivityType { get; set; } = new List<ActivityType>();
     }
 }
