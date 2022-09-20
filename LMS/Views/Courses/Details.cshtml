@@ -1,5 +1,4 @@
-﻿@*@model LMS.Core.Entities.Course*@
-@model LMS.Core.Entities.ViewModels.CoursesViewModel
+﻿@model LMS.Core.Entities.ViewModels.CoursesViewModel
 @{
     ViewData["Title"] = "Details";
 }
@@ -42,5 +41,5 @@
  
 
 <div class="pt-5">
-    <a asp-action="IndexTeacher">Back to List</a>
+    <a asp-controller="Courses" asp-action="IndexTeacher">Back to teacher</a>
 </div>

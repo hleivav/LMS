@@ -41,8 +41,10 @@ namespace LMS.Web.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == id);
+            var resActivity = await _context.Activity.ToListAsync();
+            var resActivityType = await _context.ActivityType.ToListAsync();
+
             var module = _context.Module
              .Where(v => v.CourseId == id)
              .ToList();
@@ -51,10 +53,13 @@ namespace LMS.Web.Controllers
             {
                 Id = (int)id,
                 listOfModules = module,
+                ListOfActivity = resActivity,
+                ListOfActivityType = resActivityType,
                 Name = course.Name,
                 Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate
+
             };
             if (course == null)
             {
@@ -84,6 +89,54 @@ namespace LMS.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateModule(CoursesViewModel viewModel)
+        {
+           CoursesViewModel coursesViewModel=null;
+            if (ModelState.IsValid)
+            {
+                var module2 = new Module
+                {
+                    CourseId = viewModel.Id,
+                    Name = viewModel.ModuleName,
+                    Description = viewModel.ModuleDescription,
+                    StartDate = viewModel.ModuleStartDate,
+                    EndDate = viewModel.ModuleEndDate                  
+                };
+                _context.Module.Add(module2);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Module \""+ viewModel.ModuleName+"\" Added ";
+                return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == viewModel.Id);
+                var resActivity = await _context.Activity.ToListAsync();
+                var resActivityType = await _context.ActivityType.ToListAsync();
+
+                var module = _context.Module
+                 .Where(v => v.CourseId == viewModel.Id)
+                 .ToList();
+
+                 coursesViewModel = new CoursesViewModel()
+                {
+                    Id = (int)viewModel.Id,
+                    listOfModules = module,
+                    ListOfActivity = resActivity,
+                    ListOfActivityType = resActivityType,
+                    Name = course.Name,
+                    Description = course.Description,
+                    StartDate = course.StartDate,
+                    EndDate = course.EndDate                   
+                };
+             TempData["Message"] = "Not Added ";
+             }
+
+            return View("Details",coursesViewModel);
         }
 
         // GET: Courses/Edit/5
@@ -218,6 +271,7 @@ namespace LMS.Web.Controllers
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
+            var resUsers= await _context.Users.ToListAsync();
 
             var indexViewModel = new IndexViewModel()
             {
@@ -226,8 +280,8 @@ namespace LMS.Web.Controllers
                 ListOfStudents= (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
-                ListOfActivityType = resActivityType
-
+                ListOfActivityType = resActivityType,
+                ListOfUsers =resUsers
             };
             
             if (User.IsInRole("Student"))
@@ -252,6 +306,7 @@ namespace LMS.Web.Controllers
             var resModule = await _context.Module.ToListAsync();
             var resActivity = await _context.Activity.ToListAsync();
             var resActivityType = await _context.ActivityType.ToListAsync();
+            var resUsers = await _context.Users.ToListAsync();
 
             var indexViewModel = new IndexViewModel()
             {
@@ -260,7 +315,8 @@ namespace LMS.Web.Controllers
                 ListOfStudents = (List<User>)resStudent,
                 ListOfModules = resModule,
                 ListOfActivity = resActivity,
-                ListOfActivityType = resActivityType
+                ListOfActivityType = resActivityType,
+                ListOfUsers = resUsers
 
 
             };

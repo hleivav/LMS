@@ -1,11 +1,13 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    font-family: Century Gothic;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        background-color: hsl(218, 71%, 95%);
+    }
 }
 
 html {
@@ -14,5 +16,61 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 0px;
+    background-color: hsl(218, 71%, 95%);
 }
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+
+
+.background-radial-gradient {
+    background-color: hsl(218, 41%, 15%);
+    height:100%;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer {
+    color: hsl(218, 41%, 15%);
+    width: 90%;
+    outline-style: groove;
+    text-align: center;
+    text-decoration: overline;
+    margin-inline-start: 6%;
+    height: 40px;
+    block-size: fit-content;
+    padding-block: 4.5%;
+    
+}
+.nt {
+    text-align: center;
+    padding: 1em;
+    margin-left:36%;
+    
+}
+
+.teachertable {
+    background-color: white;
+    /*    background: linear-gradient(90deg, hsl(218, 71%, 95%), hsl(218, 81%, 75%));
+*/ background: repeating-linear-gradient(90deg, hsl(218, 71%, 95%), hsl(218, 51%, 75%) );
+    font-family: Century Gothic;
+    border-block: solid;
+}
+
+.btn {
+    display: inline-block;
+}
+
+
+
+
+
+

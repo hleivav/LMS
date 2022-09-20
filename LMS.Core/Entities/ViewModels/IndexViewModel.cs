@@ -15,6 +15,6 @@ namespace LMS.Core.Entities.ViewModels
         public List<Module> ListOfModules { get; set; }
         public List<Activity> ListOfActivity { get; set; }
         public List<ActivityType> ListOfActivityType { get; set; }
-
+        public List<User> ListOfUsers { get; set; }
     }
 }

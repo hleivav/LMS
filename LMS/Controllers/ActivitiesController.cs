@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data;
 using LMS.Data.Data;
+using LMS.Core.Entities.ViewModels;
 
 namespace LMS.Web.Controllers
 {
@@ -47,9 +48,16 @@ namespace LMS.Web.Controllers
         }
 
         // GET: Activities/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            return View();
+            var resActivityType = await _context.ActivityType.ToListAsync();
+            var activityViewModel = new ActivityViewModel
+            {
+                ModuleId = (int)id,
+                ListOfActivityType = resActivityType
+            };
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Name");
+            return View("Create",activityViewModel);
         }
 
         // POST: Activities/Create
@@ -57,15 +65,27 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StarDate,EndDate")] Activity activity)
+        public async Task<IActionResult> Create(ActivityViewModel activity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activity);
+                var ac = new Activity
+                {
+                    ModuleId = activity.ModuleId,
+                    Name = activity.Name,
+                    Description = activity.Description,
+                    StartDate = activity.StartDate,
+                    EndDate = activity.EndDate,
+                    ActivityTypeId=activity.ActivityTypeId
+                };
+                _context.Activity.Add(ac);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Activity added to module: " + activity.ModuleId;
                 return RedirectToAction(nameof(Index));
             }
-            return View(activity);
+            TempData["Message"] = "Activity Not added to module";
+            return RedirectToAction(nameof(Index));
+            //return View(Index);
         }
 
         // GET: Activities/Edit/5
