@@ -134,7 +134,7 @@ namespace LMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexTeacher));
             }
             return View(course);
         }
@@ -166,14 +166,41 @@ namespace LMS.Web.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Course'  is null.");
             }
-            var course = await _context.Course.FindAsync(id);
-            if (course != null)
-            {
-                _context.Course.Remove(course);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var course = await _context.Course
+                .Include(c => c.Users)
+                .Include(c => c.Modules)
+                .ThenInclude(m => m.Activities)
+                .FirstOrDefaultAsync(m => m.Id == id);
+                //var module = _context.Module
+                //                 .Where(v => v.CourseId == id)
+                //                 .ToList();
+
+                //int i = 0;
+                //while(module.Count > 0)
+                //{
+                //    var activities = _context.Activity
+                //        .Where(m => m.ModuleId == module[i].Id)
+                //        .ToList();
+                    
+                //    if (module[i].Activities.Count > 0)
+                //    {
+                //        for (int j = 0; j < activities.Count - 1; j++)
+                //        {
+                //            _context.Activity.Remove(activities[j]); //bort med alla aktiviteter
+                //            int xxx = j;
+                //            await _context.SaveChangesAsync();
+                //        }
+                //    }
+                //    _context.Module.Remove(module[i]); //bort med modulen när aktiviteterna är borttagna eller när de inte fanns alls.
+                //    i++;
+                //    await _context.SaveChangesAsync();
+                //}
+                
+            _context.Course.Remove(course); //bort med kursen när inga moduler finns.
+            _context.RemoveRange(course.Users);
+ 
+            await _context.SaveChangesAsync();////den här
+            return RedirectToAction(nameof(IndexTeacher));
         }
 
         private bool CourseExists(int id)

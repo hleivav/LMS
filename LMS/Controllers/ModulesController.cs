@@ -114,7 +114,8 @@ namespace LMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("IndexTeacher", "Course");
             }
             return View(@module);
         }
