@@ -2,17 +2,17 @@
 @inject SignInManager<LMS.Core.Entities.User> SignInManager
 @inject UserManager<LMS.Core.Entities.User> UserManager
 
-<ul class="navbar-nav">
+<ul class="navright">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="border border-danger btn border-1 nav-link text-dark mx-4" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><em><strong>HELLO</strong></em> @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
+   
+        <a  class=" border border-secondary btn border-1 nav-link text-dark mx-4" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><em><strong>HELLO</strong></em> @User.Identity?.Name!</a>
+   
+   
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark btn-danger">Log out <i class="fa fa-sign-out"></i></button>
         </form>
-    </li>
+    
 }
 else
 {

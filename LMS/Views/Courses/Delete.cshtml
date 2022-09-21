@@ -4,42 +4,59 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<section class="backgroundphoto">
+<div class="container1 inline-block">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Course</h4>
+<h3 style="color: #293a7d;">Are you sure you want to delete this course?</h3>
+<div class="col-lg-12">
+    
     <hr />
+    <form asp-action="Delete">
     <dl class="row">
+        <div>
         <dt class = "col-sm-2">
+            
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        </div>
+
+        <div>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+        </div>
+        <div>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
+        </div>
+        <div>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
+        </div>
+        
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="IndexTeacher">Back to List</a>
+           <button class="btn btn-outline-danger "> <a asp-action="IndexTeacher">Back to List</a></button>
+    </form>
+
     </form>
 </div>
+
+</section>
