@@ -41,8 +41,10 @@ namespace LMS.Web.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == id);
+            var resActivity = await _context.Activity.ToListAsync();
+            var resActivityType = await _context.ActivityType.ToListAsync();
+
             var module = _context.Module
              .Where(v => v.CourseId == id)
              .ToList();
@@ -51,10 +53,13 @@ namespace LMS.Web.Controllers
             {
                 Id = (int)id,
                 listOfModules = module,
+                ListOfActivity = resActivity,
+                ListOfActivityType = resActivityType,
                 Name = course.Name,
                 Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate
+
             };
             if (course == null)
             {
@@ -84,6 +89,54 @@ namespace LMS.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateModule(CoursesViewModel viewModel)
+        {
+           CoursesViewModel coursesViewModel=null;
+            if (ModelState.IsValid)
+            {
+                var module2 = new Module
+                {
+                    CourseId = viewModel.Id,
+                    Name = viewModel.ModuleName,
+                    Description = viewModel.ModuleDescription,
+                    StartDate = viewModel.ModuleStartDate,
+                    EndDate = viewModel.ModuleEndDate                  
+                };
+                _context.Module.Add(module2);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Module \""+ viewModel.ModuleName+"\" Added ";
+                return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == viewModel.Id);
+                var resActivity = await _context.Activity.ToListAsync();
+                var resActivityType = await _context.ActivityType.ToListAsync();
+
+                var module = _context.Module
+                 .Where(v => v.CourseId == viewModel.Id)
+                 .ToList();
+
+                 coursesViewModel = new CoursesViewModel()
+                {
+                    Id = (int)viewModel.Id,
+                    listOfModules = module,
+                    ListOfActivity = resActivity,
+                    ListOfActivityType = resActivityType,
+                    Name = course.Name,
+                    Description = course.Description,
+                    StartDate = course.StartDate,
+                    EndDate = course.EndDate                   
+                };
+             TempData["Message"] = "Not Added ";
+             }
+
+            return View("Details",coursesViewModel);
         }
 
         // GET: Courses/Edit/5
@@ -134,7 +187,7 @@ namespace LMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexTeacher));
             }
             return View(course);
         }
@@ -166,14 +219,41 @@ namespace LMS.Web.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Course'  is null.");
             }
-            var course = await _context.Course.FindAsync(id);
-            if (course != null)
-            {
-                _context.Course.Remove(course);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var course = await _context.Course
+                .Include(c => c.Users)
+                .Include(c => c.Modules)
+                .ThenInclude(m => m.Activities)
+                .FirstOrDefaultAsync(m => m.Id == id);
+                //var module = _context.Module
+                //                 .Where(v => v.CourseId == id)
+                //                 .ToList();
+
+                //int i = 0;
+                //while(module.Count > 0)
+                //{
+                //    var activities = _context.Activity
+                //        .Where(m => m.ModuleId == module[i].Id)
+                //        .ToList();
+                    
+                //    if (module[i].Activities.Count > 0)
+                //    {
+                //        for (int j = 0; j < activities.Count - 1; j++)
+                //        {
+                //            _context.Activity.Remove(activities[j]); //bort med alla aktiviteter
+                //            int xxx = j;
+                //            await _context.SaveChangesAsync();
+                //        }
+                //    }
+                //    _context.Module.Remove(module[i]); //bort med modulen när aktiviteterna är borttagna eller när de inte fanns alls.
+                //    i++;
+                //    await _context.SaveChangesAsync();
+                //}
+                
+            _context.Course.Remove(course); //bort med kursen när inga moduler finns.
+            _context.RemoveRange(course.Users);
+ 
+            await _context.SaveChangesAsync();////den här
+            return RedirectToAction(nameof(IndexTeacher));
         }
 
         private bool CourseExists(int id)

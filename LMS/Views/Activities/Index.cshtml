@@ -4,7 +4,24 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
+
+@if (TempData["Message"] != null)
+{
+<div class="row pt-2 pb-2">
+        <div class="col-12">
+	       <div class="alert alert-info text-center">
+	          <strong>@TempData["Message"]</strong>
+	       </div>
+        </div>
+    </div>
+}
+
+<div class="text-center">
+    <a asp-controller="Courses" asp-action="IndexTeacher">Back to Teacher</a> 
+</div>
+
+@*<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -50,4 +67,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

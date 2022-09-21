@@ -40,9 +40,11 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+<div class="pt-5">
+    <a asp-controller="Courses" asp-action="IndexTeacher">Back to teacher</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
