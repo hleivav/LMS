@@ -1,15 +1,23 @@
 ﻿using LMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LMS.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IHostingEnvironment _hostingEnv;
+        public HomeController(ILogger<HomeController> logger, IHostingEnvironment hostingEnv)
         {
+            _hostingEnv = hostingEnv;
             _logger = logger;
         }
 
@@ -29,6 +37,13 @@ namespace LMS.Controllers
 
         }
 
+        public IActionResult Index2()
+        {
+
+            return View();
+
+        }
+
 
         public IActionResult Privacy()
         {
@@ -40,5 +55,10 @@ namespace LMS.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
+
+
     }
+
 }

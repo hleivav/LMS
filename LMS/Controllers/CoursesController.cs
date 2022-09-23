@@ -10,19 +10,23 @@ using LMS.Data.Data;
 using Microsoft.AspNetCore.Authorization;
 using LMS.Core.Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using System.Net.Http.Headers;
 
 namespace LMS.Web.Controllers
 {
     [Authorize]
     public class CoursesController : Controller
     {
+        private IHostingEnvironment _hostingEnv;
         private readonly ApplicationDbContext _context;
         private Task<string?> indexViewModel;
         private readonly UserManager<User> userManager;
-        public CoursesController(ApplicationDbContext context, UserManager<User> userManager)
+        public CoursesController(ApplicationDbContext context, UserManager<User> userManager, IHostingEnvironment hostingEnv)
         {
             _context = context;
             this.userManager = userManager;
+            _hostingEnv = hostingEnv;
         }
 
         // GET: Courses
@@ -260,7 +264,7 @@ namespace LMS.Web.Controllers
         {
           return (_context.Course?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
+       
 
         public async Task<IActionResult> IndexStudent()
         {
@@ -327,6 +331,67 @@ namespace LMS.Web.Controllers
                           Problem("Entity set 'ApplicationDbContext.Course'  is null.");
 
         }
+
+
+        //public ActionResult StudentDocuments()
+        //{
+        //    return View();
+        //}
+
+
+
+            [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile FormFile)
+        {
+
+            var filename = ContentDispositionHeaderValue.Parse(FormFile.ContentDisposition).FileName.Trim('"');
+             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Documents", FormFile.FileName);
+           // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+            using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+            {
+                await FormFile.CopyToAsync(stream);
+            }
+
+
+            return RedirectToAction("StudentDocuments", "Courses");
+
+        }
+
+        
+
+        // GET: 
+        public ActionResult StudentDocuments()
+        {
+            
+            //Fetch all files in the Folder (Directory).
+            //string[] filePaths = Directory.GetFiles(Server.MapPath("~/Files/"));
+            string wwwPath = _hostingEnv.WebRootPath;
+            string[] filePaths = Directory.GetFiles(wwwPath+"/documents/");
+
+            //Copy File names to Model collection.
+            List <FileModel> files = new List<FileModel>();
+            foreach (string filePath in filePaths)
+            {
+                files.Add(new FileModel { FileName = Path.GetFileName(filePath) });
+            }
+
+            return View(files);
+        }
+
+        public FileResult DownloadFile(string fileName)
+        {
+            string wwwPath = _hostingEnv.WebRootPath;
+            //Build the File Path.
+            //string path = Server.MapPath("~/Files/") + fileName;
+            string path = wwwPath +"/Documents/"+ fileName;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileName);
+        }
+
 
 
     }
