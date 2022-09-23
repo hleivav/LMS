@@ -28,4 +28,8 @@
     <ProjectReference Include="..\LMSData\LMS.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Documents\" />
+  </ItemGroup>
+
 </Project>

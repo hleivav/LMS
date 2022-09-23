@@ -1,4 +1,5 @@
-﻿@using LMS.Core.Entities
+﻿
+@using LMS.Core.Entities
 @using LMS.Core.Entities.ViewModels
 @using Microsoft.AspNetCore.Identity
 @model IndexViewModel
@@ -6,79 +7,54 @@
 
 
 @{
+    
     ViewData["Title"] = "Home Page";
 }
 
 <div >
     <p class="display-6">Welcome to Lexicon,
-        you are logged in as a Student 
-        
-    </p>
+        you are logged in as a Student </p>
+    <a asp-action="StudentDocuments">Go To Documents</a>
+    <br />
     Your current course:                              
-
+    
 
     @{
-        var studentId = int.Parse(@UserManager.GetUserId(User));
-        int.Parse(@UserManager.GetUserId(User));
-        //var courseId = @Model.ListOfUsers[studentId].CourseId; 
+        
+        var studentId = int.Parse(@UserManager.GetUserId(User));        
         var courseId = @Model.ListOfUsers.Where(g => g.Id == studentId).FirstOrDefault().CourseId;
-
-
-
-
-        /* var currentUserCorse = @Model.ListOfCourses[courseId.Value-1].Name;*/ //List is indexed from 0 while datatable is indexed from 1
-
         var currentUserCorse = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().Name;
-        //var start = @Model.ListOfCourses[courseId.Value - 1].StartDate;
         var start = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate;
-
-        //var end = @Model.ListOfCourses[courseId.Value - 1].EndDate;
         var end = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate;
+     }
 
-
-
-         }
     @Html.DisplayFor(model => currentUserCorse) <br />
-   @* @Html.DisplayFor(model => @Model.ListOfCourses[courseId.Value - 1].StartDate) to @Html.DisplayFor(model =>  @Model.ListOfCourses[courseId.Value - 1].EndDate)*@
-
     @Html.DisplayFor(model => @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate) to @Html.DisplayFor(model =>  @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate)
-
     <br /><br />
 
     @if (start>DateTime.Now | end<DateTime.Now){ <p>You have no modules at present</p> }
     else
-    {
-    
-   
-                <p>Your current module:</p>
-
-       @* @foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)*@
-        @foreach (var item in Model.ListOfCourses.Where(m => m.Id == courseId).FirstOrDefault().Modules)
-
-
+    {                <p>Your current module:</p>
+       @foreach (var item in Model.ListOfCourses.Where(m => m.Id == courseId).FirstOrDefault().Modules)
         {
             @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
             {
                 <tr>
-                 <td>
+                        <td>
                         @Html.DisplayFor(modelItem => item.Name)
-                 </td>
-                    <br />
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    to
-                 <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                 </td>
-                
-
+                        </td>
+                            <br />
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                            to
+                        <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
                 </tr>
             }
         }   
-    
-    
-    <br /><br />
+        <br /><br />
 
 
         <p>Your current Activity: </p>
@@ -100,25 +76,19 @@
                     <td>
                     @Html.DisplayFor(modelItem => item.EndDate)
                     </td>
-                
-
-                </tr>
+                                </tr>
                
-
-                    <br/>
-
-                    <br/>
+                    <br/><br/>
            
                     <td>
                     @Html.DisplayFor(modelItem => item.ActivityType.Name)
                     </td>
-            }
-       
+            }      
         }
     
             <br /><br />
      
-     }
+    }
      
      
      
@@ -128,152 +98,139 @@
      
     
 
-<nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Modules</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> Teachers</button>
-    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students</button>
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Modules</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"> Teachers</button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students</button>
    
-  </div>
-</nav>
+                  </div>
+                </nav>
 
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
- 
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+
+
+
+
+
+                <div class="container">
+                <div class="row row-cols-5">
+
+                        @foreach (var item in Model.ListOfModules.Where(m => m.CourseId == courseId))
             
-            
-            @*@foreach (var item in Model.ListOfCourses[courseId.Value - 1].Modules)*@
-            @foreach (var item in Model.ListOfModules.Where(m => m.CourseId == courseId))
-            
-            {
-
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <br>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
+                        {
+                
+                               
+                                           
+                                    <div class="col">
+                            <u>Name</u><br>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                       
+                                           
+                                            <br>
+                            <u>Description</u><br>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            
 
 
-                        <br>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        to
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <br>
-                        <br>
+                                            <br>
+                            <u>Time</u><br>
+                                                @Html.DisplayFor(modelItem => item.StartDate)
+                                           
+                                            to
+                                            
+                                                @Html.DisplayFor(modelItem => item.EndDate)
 
-                    </tr>
-                }
-            }
-              
-           
+                            <br><br><br>
+                        
+                                    </div>
+                                
+                                        foreach (var act in Model.ListOfActivity.Where(p=>p.ModuleId==item.Id))
+                                        {
+                            <div class="col">
+                                <u>Activity</u><br>
+                                @Html.DisplayFor(modelItem => act.Name)
+
+                                <br />
+                                <u>Description</u><br>
+                                @Html.DisplayFor(modelItem => act.Description)
+
+                                <br />
+                                <u>ActivityType</u><br>
+                                @Html.DisplayFor(modelItem => act.ActivityType.Name)
+
+                                    <br />
+                                    <br />
+                             </div>
+                    
+                     
+                        }                
+                        }
+
+                </div>
+            </div>
+
+
         </div>
+      
+         
+         
+         
+         
+                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+          
 
-
-
-
-        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-           @* <partial name="_Index_Partial_Teacher" model="@Model.ListOfUsers" />*@
-
-            @foreach (var item in Model.ListOfTeachers)
-            {
+                        @foreach (var item in Model.ListOfTeachers)
+                        {
 
                
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <br>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <br>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
 
-                        <br>
-                        <br>
+                                    <br>
+                                    <br>
 
-                    </tr>
-                
-            }
+                                </tr>                
+                        }
 
-       
-       </div>
+                     </div>
         
         
        
         
-        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
 
+                       @foreach (var item in Model.ListOfStudents)
+                        {                
+                            if (item.CourseId == courseId) 
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <br>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
 
-
-            @foreach (var item in Model.ListOfStudents)
-            {
-                
-                if (item.CourseId == courseId) 
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <br>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-
-                        <br>
-                        <br>
-
-                    </tr>
-                }
-            }
-
-
+                                    <br>
+                                    <br>
+                                </tr>
+                            }
+                        }
             
-        </div>
+                    </div>
     </div>
 
     
   
-@*
-    <span>
-        <h2>Upload Document</h2>
-        <form action="" method="post" enctype="multipart/form-data">
-            <table>
-                <td>
-                    <label for="file">Filename</label>
-                </td>
-                <td>
-                    <input type="file" name="file" id="file" />
-                </td>
-                <td>
-                    <input type="submit" value="Upload" />
-                </td>
-            </table>
-        </form>
-    </span>*@
-
-
-@*
-    <div class="mb-3">
-        <label for="formFile" class="form-label">Fil att läsa</label>
-        <input class="form-control" type="file" id="formFile">
-    </div>
-
-
-
-
-
-*@
-
-
-
-
 
 
 

@@ -1,0 +1,43 @@
+﻿@using LMS.Core.Entities
+@using LMS.Core.Entities.ViewModels
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<User> UserManager
+@*@model List<FileModel>*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    var studentId = int.Parse(@UserManager.GetUserId(User)); }
+
+
+
+
+<form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
+    <dl>
+        <dt>
+            <label>Upload</label>
+        </dt>
+        <dd>
+            <input type="file" name="FormFile" id="FormFile">
+            
+        </dd>
+    </dl>
+    <input class="btn" type="submit" value="Upload" />
+</form>
+
+
+<table>
+    <tr>
+        <th>File Name</th>
+        <th></th>
+    </tr>
+    @foreach (FileModel file in Model)
+    {
+        <tr>
+            <td>@file.FileName</td>
+            <td>@Html.ActionLink("Download", "DownloadFile", new { fileName = file.FileName })</td>
+        </tr>
+    }
+</table>
