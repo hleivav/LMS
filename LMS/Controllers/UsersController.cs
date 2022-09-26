@@ -8,17 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using LMS.Core.Entities.ViewModels;
 
 namespace LMS.Web.Controllers
 {
     [Authorize]
-    public class UserssController : Controller
+    public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> userManager;
 
-        public UserssController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Userss
@@ -71,24 +75,52 @@ namespace LMS.Web.Controllers
             return View(Users);
         }
 
-        // GET: Userss/Edit/5
+        // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
+
             if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
+
+
 
             var Users = await _context.Users.FindAsync(id);
             if (Users == null)
             {
                 return NotFound();
             }
+
+            ///////////////////STYR MOT RÄTT FLIK/////////////////////
+
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfStudents = (List<User>)resStudent,
+            };
+
+            foreach (var student in resStudent)
+            {
+                if (student.Id == id)
+                {
+                    TempData["Origin"] = "op3";
+                    break;
+                }
+                else
+                {
+                    TempData["Origin"] = "op2";
+                }
+            }
+
+            ///////////////////////////////////////////////////////////
+
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Description", Users.CourseId);
             return View(Users);
         }
 
-        // POST: Userss/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -111,16 +143,19 @@ namespace LMS.Web.Controllers
                 {
                     if (!UsersExists(Users.Id))
                     {
-                        return NotFound();
+                        return NotFound(); 
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                TempData["RouteOrigin"] = "StudentTab";
+
+                return RedirectToAction("IndexTeacher", "Courses", new {origin = "op2"});
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Description", Users.CourseId);
+            
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Description", Users.CourseId);
             return View(Users);
         }
 

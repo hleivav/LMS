@@ -3,7 +3,12 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    string activeTab = (string)TempData["Origin"];
+
+    
+
 }
+
 
 <div class="text-center pt-0">
     
@@ -19,25 +24,78 @@
 
    <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Courses <i class="fa fa-book"></i></button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" src="teacher-svgrepo-com.svg"> Teachers  <i class="fa fa-users"></i></button>
-    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students <i class="fa fa-users"></i></button>
+            @if (activeTab == "op1")
+            {
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Courses <i class="fa fa-book"></i></button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" src="teacher-svgrepo-com.svg"> Teachers  <i class="fa fa-users"></i></button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students <i class="fa fa-users"></i></button>
+
+            }
+            @if (activeTab == "op2")
+            {
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Courses <i class="fa fa-book"></i></button>
+                <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" src="teacher-svgrepo-com.svg"> Teachers  <i class="fa fa-users"></i></button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students <i class="fa fa-users"></i></button>
+
+            }
+            @if (activeTab == "op3")
+            {
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Courses <i class="fa fa-book"></i></button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" src="teacher-svgrepo-com.svg"> Teachers  <i class="fa fa-users"></i></button>
+                <button class="nav-link active" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Students <i class="fa fa-users"></i></button>
+
+            }
    
   </div>
 </nav>
 
 <div class="teachertable">
-<div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-      <partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>
-  </div>
-  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-      <partial name="_Index_Partial_Teacher" model="@Model.ListOfTeachers"/>
-  </div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-    <partial name="_Index_Partial_Student" model="@Model.ListOfStudents"/>
-  </div>
-</div>
+    <div class="tab-content" id="nav-tabContent">
+            
+            @if (activeTab == "op1")
+            {
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                    <partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>
+                </div>
+ 
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                    <partial name="_Index_Partial_Teacher" model="@Model.ListOfTeachers"/>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                <partial name="_Index_Partial_Student" model="@Model.ListOfStudents"/>  
+                </div>
+            }
+
+            @if (activeTab == "op2")
+            {
+                <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                    <partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>
+                </div>
+
+                <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                    <partial name="_Index_Partial_Teacher" model="@Model.ListOfTeachers"/>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                    <partial name="_Index_Partial_Student" model="@Model.ListOfStudents"/>  
+                </div>
+            }
+            @if (activeTab == "op3")
+            {
+                <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                    <partial name="_Index_Partial_Course" model="@Model.ListOfCourses"/>
+                </div>
+ 
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                    <partial name="_Index_Partial_Teacher" model="@Model.ListOfTeachers"/>
+                </div>
+                <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                <partial name="_Index_Partial_Student" model="@Model.ListOfStudents"/>  
+                </div>
+            }
+
+
+
+    </div>
 </div>
 
 </div>
