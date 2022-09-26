@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<LMS.Core.Entities.User>
+@{
+    TempData["currentTab"] = "op2";
+}
+    
 <div class="text-center pt-1 pb-3">
   <h3>All teachers</h3>
 </div>
@@ -37,11 +41,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            @*<td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>*@
+            <td  class=" btn display-inline-block">
+                <button  class="btn btn-light px-1 mb-1" ><a asp-controller="Users" asp-action="Edit" asp-route-id="@item.Id">Edit  <i class="fa fa-info"></i></a></button>
+                <button  class="btn btn-light px-1 mb-1" ><a asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">Details  <i class="fa fa-info"></i></a></button>
+                <button  class="btn btn-light px-1  mb-1 "  ><a asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id">Delete <i class="fa fa-trash"></i> </a></button>
+            </td>
         </tr>
 }
     </tbody>

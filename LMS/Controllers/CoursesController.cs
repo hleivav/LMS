@@ -268,7 +268,13 @@ namespace LMS.Web.Controllers
 
         public async Task<IActionResult> IndexStudent()
         {
-            
+
+            if (TempData["Origin"] is null) //test
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"]; //test
+
             var resCourse = await _context.Course.Include(g=>g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
@@ -301,9 +307,13 @@ namespace LMS.Web.Controllers
         }
 
 
-        public async Task<IActionResult> IndexTeacher()
+        public async Task<IActionResult> IndexTeacher(string origin)
         {
-
+            if (TempData["Origin"] is null)
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"];
             var resCourse = await _context.Course.Include(g => g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
