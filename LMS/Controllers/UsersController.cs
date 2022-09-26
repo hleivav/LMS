@@ -40,6 +40,27 @@ namespace LMS.Web.Controllers
                 return NotFound();
             }
 
+            ///////////////////tillbaka till rätt flik////////////////
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfStudents = (List<User>)resStudent,
+            };
+
+            foreach (var student in resStudent)
+            {
+                if (student.Id == id)
+                {
+                    TempData["Origin"] = "op3";
+                    break;
+                }
+                else
+                {
+                    TempData["Origin"] = "op2";
+                }
+            }
+            ////////////////////////////////////////////////////
+
             var Users = await _context.Users
                 .Include(u => u.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -166,6 +187,27 @@ namespace LMS.Web.Controllers
             {
                 return NotFound();
             }
+
+            ///////////////////tillbaka till rätt flik////////////////
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfStudents = (List<User>)resStudent,
+            };
+
+            foreach (var student in resStudent)
+            {
+                if (student.Id == id)
+                {
+                    TempData["Origin"] = "op3";
+                    break;
+                }
+                else
+                {
+                    TempData["Origin"] = "op2";
+                }
+            }
+            ////////////////////////////////////////////////////
 
             var Users = await _context.Users
                 .Include(u => u.Course)
