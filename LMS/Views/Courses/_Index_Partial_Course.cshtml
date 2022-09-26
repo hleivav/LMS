@@ -88,10 +88,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details/Add module</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td class=" btn display-inline-block">
+                <button class="btn btn-light px-1  mb-1 "><a asp-action="Edit" asp-route-id="@item.Id">Edit <i class="fa fa-edit"></i> </a> </button>
+                
+                 <button  class="btn btn-light px-1 mb-1" ><a asp-action="Details" asp-route-id="@item.Id">Details  <i class="fa fa-info"></i></a></button>
+                 
+                  <button  class="btn btn-light px-1  mb-1 "  ><a asp-action="Delete" asp-route-id="@item.Id">Delete <i class="fa fa-trash"></i> </a></button>
             </td>
         </tr>
 }
