@@ -44,46 +44,69 @@
 *@
 
 
-    <tr>
-        <th>Assignments:</th><br />
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-6">Assignments</div>
+</div>
+
+
+
 @{
     bool test = false;
 }
     @foreach (var item  in Model.Documents)
     {
-        <tr>
+       
         @if ((item.UserId == studentId)&& (item.Description != "returning Assignment"))
-            {
-                <td>@item.DocumentName  from:  @item.CreatorName</td><br />
-            <td>@Html.ActionLink("Download", "DownloadFile", new { fileName = item.DocumentName })</td><br />
+        {
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-6">@item.DocumentName  from:  @item.CreatorName</div>
+                    </div>
+                        
+                    
+                        <div class="row">
+                            <div class="col-2"></div>
 
-
-
-
-
-                <td>Due Date: @item.LogDate.AddDays(7) </td><br />
+                            <div class="col-6">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.DocumentName })</div>
+                        </div>
+                             
+                <div class="row">
+                            <div class="col-2"></div>
+                      <div class="col-6">Due Date: @item.LogDate.AddDays(7)</div> 
+                </div>
+                
+                
             @if (item.LogDate.AddDays(7) < DateTime.Now)
             {
-                
-                <p class="text-danger">You are late</p>
+               <div class="row">
+                    <div class="col-2"></div> 
+                    <div class="col-6" ><div class="text-danger">You are late<br /></div></div>
+                    </div>
             }
             <br />
-            <br />
-            <p>Return Assignment</p>
+           <div class="row">
+                    <div class="col-2"></div>
+             <div class="col-6">Return Assignment</div>
+             </div>
             
-            <form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
-                <dl>
-                    <dt>
-                        <label>Upload</label>
-                    </dt>
-                    <dd>
-                        <input type="file" name="FormFile" id="FormFile">
 
-                    </dd>
-                </dl>
-                <input class="btn" type="submit" value="Upload" />
+            <form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
+                
+              @*<div class="row">
+                    <div class="col-2"></div>       
+                    <div class="col-6"><label>Upload</label>
+             </div>   *@    
+                    <div class="row">
+                        <div class="col-2"></div> 
+                        <div class="col-6"><input type="file" name="FormFile" id="FormFile"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2"></div> 
+                <div class="col-6"><input class="btn" type="submit" value="Upload"></div>      
+                </div>
+               
             </form>
             @if (item.Description == "returning Assignment")
             {
@@ -97,14 +120,14 @@
                 test = true;
         }
             
-        </tr>
+       
         
 
 
 
     }
 
-
+</div>
 
 
 @if (test==false)
@@ -112,5 +135,7 @@
     <p>No Assignments today.</p>
 }
 <br />
-
-<a asp-action="IndexStudent">Back to Homepage</a>
+<div class="row">
+           <div class="col-2"></div>
+           <div class="col-6"><a asp-action="IndexStudent">Back to Homepage</a></div>
+</div>

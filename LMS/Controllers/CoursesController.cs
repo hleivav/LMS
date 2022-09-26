@@ -344,9 +344,13 @@ namespace LMS.Web.Controllers
         public async Task<IActionResult> UploadFile(IFormFile FormFile)
         {
 
+            
             var filename = ContentDispositionHeaderValue.Parse(FormFile.ContentDisposition).FileName.Trim('"');
              var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Documents", FormFile.FileName);
-           // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+            // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+
+            if (FileExist(path)){ Console.WriteLine("existerar"); }
+
             using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
@@ -433,6 +437,16 @@ namespace LMS.Web.Controllers
 
 
         //}
-
-    }
+        public bool FileExist(string testFile) 
+        {
+            string wwwPath = _hostingEnv.WebRootPath;
+            string[] filePaths = Directory.GetFiles(wwwPath + "/documents/");
+            foreach (var item in filePaths)
+            {
+              if (item== testFile) { return true; }
+              
+            }
+            return false;
+        }
+    } 
 }
