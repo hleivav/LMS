@@ -17,7 +17,7 @@ namespace LMS.Core.Entities.ViewModels
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
-
+        public int ForwardCourseId { get; set; }
         public int CourseId { get; set; }
     }
 }

@@ -4,13 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="pt-5">
-    <h1>Create ctivity</h1>
-</div>
+<section class="backgroundphoto">
+    <div class="container1 inline-block">
 
+<h3 style="color: #293a7d;">Create a new activity</h3>
 <hr />
-@*<div class="row">
-    <div class="col-md-4">        
+<div class="row">
+    <div class="col-md-12">
         <form asp-controller="Activities" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.ModuleId" />
@@ -41,19 +41,68 @@
             </div>
             <div class="form-group">
                 <div class="pt-5">
-                   <input type="submit" value="Create" class="btn btn-primary" />
+                   <input type="submit" value="Create" class="btn btn-primary" />|
+                    <button class="btn btn-outline-primary "> <a asp-controller="Courses" asp-action="IndexTeacher">Back to teacher</a></button>
                 </div>
-
-                <div class="row pt-3  float-start">
-                          <input class="form-control" type="file" id="formFile">
-                </div>         
             </div>
-         </form>
+        </form>
     </div>
 </div>
-<div class="pt-5">
-      <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.ForwardCourseId">Back to Modules and ativities</a>
-</div>*@
+
+  <form asp-controller="Activities" asp-action="Create">
+<div class="row pt-3">
+    <div class="col-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.ModuleId" />
+            <input type="hidden" asp-for="@Model.ForwardCourseId" />       
+            <div class="pb-3 text-center">
+                  <h4>Activity</h4>
+            </div>
+            <div class="form-group">
+                <select asp-for="ActivityTypeId" class="form-control" asp-items="ViewBag.ActivityTypeId"></select>
+                <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="pt-3">
+                   <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="pt-5">
+               <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.ForwardCourseId">Back to Modules and ativities</a>
+            </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <div class="pb-3 text-center">
+              <h4>Document</h4>
+            </div>
+            <div class="row p-3  float-End">
+                   <input class="form-control" type="file" id="formFile">
+            </div> 
+        </div>
+    </div>
+</div>
+</form>
+
+
 
   <form asp-controller="Activities" asp-action="Create">
 <div class="row pt-3">
@@ -107,6 +156,7 @@
 
 
 
+  </section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

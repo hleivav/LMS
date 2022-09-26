@@ -73,24 +73,30 @@
         str += i.ToString();
         <div class="accordion" id="accordionExample">  
           <div class="accordion-item">
+
              <h2 class="accordion-header" id="headingOne">
+
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
               Module:@moduleName.Id @Html.DisplayFor(modelItem => moduleName.Name)
                </button>
+
              </h2>
+
           <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
               <div class="row">
-                  <div class="col-6">
-                      <div class="text-center"> <strong>Module</strong></div>
+
+                  <div class="col-6  border-end">
+                      <div class="text-center border border-primary"> <strong>Module</strong></div>
                     @*<strong>MODULEID: @Html.DisplayFor(modelItem => moduleName.Id)</strong> <br>*@
                     <strong>Name: </strong>@Html.DisplayFor(modelItem => moduleName.Name)<br>
                     <strong>Start Date: </strong>@Html.DisplayFor(modelItem => moduleName.StartDate)<br>
                     <strong>End date: </strong>@Html.DisplayFor(modelItem => moduleName.EndDate)<br>
-                    <strong>Description: </strong>@Html.DisplayFor(modelItem => moduleName.Description)<br>                   
+                    <strong>Description: </strong>@Html.DisplayFor(modelItem => moduleName.Description)                 
                     </div>
+
                     <div class="col-6">
-                        <div class="text-center"> <strong>Activities.Click on the link to edit.</strong></div>
+                        <div class="text-center border border-primary"> <strong>Activities |  Click to edit  <i class="fa fa-mouse-pointer"></i></strong></div>
                     @foreach (var activity in Model.ListOfActivity)
                     {
                         if(activity.ModuleId == moduleName.Id)
@@ -104,8 +110,8 @@
                     </div>
                    </div>
               </div>
-              <div class="row">
-                  <div class="col-6">
+              <div class="row mt-0">
+                  <div class="col-6 ">
                      <div class="float-start">                       
                          <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id"
                          asp-route-forwardId="@Model.ForwardCourseId">Edit</a> 
@@ -122,6 +128,7 @@
     }
   </div>
 
+
    
   <script>
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -130,4 +137,52 @@
       })
   </script>
   
-  
+  </div>
+
+  <div class="col-lf-6 p-3  h-md-100">
+    <div class="col text-start">
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
+           New Module <i class="fa fa-plus-circle"></i>
+          </button>
+          
+       <div class="collapse" id="createModule">
+          <div class="card card-body">         
+              <div class="card" style="width: 25rem; padding-top:5%">
+                  <div class="card-body">     
+                      <div class="row">
+                         <div class="col">
+                           <form asp-controller="Courses" asp-action="CreateModule">
+                               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                               <input type="hidden" asp-for="@Model.Id" />
+                                  <div class="form-group">
+                                     <label asp-for="ModuleName" class="control-label"></label>
+                                     <input asp-for="@Model.ModuleName" class="form-control" />
+                                     <span asp-validation-for="@Model.ModuleName" class="text-danger"></span>
+                                  </div>
+                                  <div class="form-group">
+                                    <label asp-for="ModuleDescription" class="control-label"></label>
+                                    <input asp-for="@Model.ModuleDescription" class="form-control" />
+                                    <span asp-validation-for="@Model.ModuleDescription" class="text-danger"></span>
+                                    </div>
+                                 <div class="form-group">
+                                   <label asp-for="ModuleStartDate" class="control-label"></label>
+                                   <input asp-for="@Model.ModuleStartDate" class="form-control" />
+                                   <span asp-validation-for="@Model.ModuleStartDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label asp-for="ModuleEndDate" class="control-label"></label>
+                                  <input asp-for="@Model.ModuleEndDate" class="form-control" />
+                                  <span asp-validation-for="@Model.ModuleEndDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group pt-3">
+                                  <input type="submit" value="Save" class="btn btn-primary "/> <i class="fa fa-check"></i>
+                                </div>
+                         </form>
+                        </div>
+                      </div>                   
+                  </div>
+              </div>
+          </div>
+         </div>
+       </div>
+     </div>
