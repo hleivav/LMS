@@ -48,13 +48,14 @@ namespace LMS.Web.Controllers
         }
 
         // GET: Activities/Create
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int id, int forwardId, string acName)
         {
             var resActivityType = await _context.ActivityType.ToListAsync();
             var activityViewModel = new ActivityViewModel
             {
-                ModuleId = (int)id,
-                ListOfActivityType = resActivityType
+                ModuleId = id ,
+                ForwardCourseId =forwardId,
+                ActivityName = acName
             };
             ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Name");
             return View("Create",activityViewModel);
@@ -80,28 +81,42 @@ namespace LMS.Web.Controllers
                 };
                 _context.Activity.Add(ac);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Activity added to module: " + activity.ModuleId;
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = "Activity \""+activity.Name+"\" added to module \"" + activity.ModuleId+"\"";
+                string strr = "/Courses/Details/" + activity.ForwardCourseId.ToString();
+                return Redirect(strr);
             }
             TempData["Message"] = "Activity Not added to module";
-            return RedirectToAction(nameof(Index));
-            //return View(Index);
+            string str = "/Courses/Details/" + activity.ForwardCourseId.ToString();
+            return Redirect(str);
+           
         }
 
         // GET: Activities/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id, int forwardId)
         {
-            if (id == null || _context.Activity == null)
-            {
-                return NotFound();
-            }
+            //if (id == null || _context.Activity == null)
+            //{
+            //    return NotFound();
+            //}
 
             var activity = await _context.Activity.FindAsync(id);
+            ActivityViewModel activityViewModel = new ActivityViewModel()
+            {
+                Id = id,
+                Name = activity?.Name,
+                Description = activity?.Description,
+                StartDate = activity.StartDate,
+                EndDate = activity.EndDate,
+                ForwardCourseId = forwardId,
+                ActivityTypeId = activity.ActivityTypeId
+            };
             if (activity == null)
             {
                 return NotFound();
             }
-            return View(activity);
+            
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Name");
+            return View(activityViewModel);
         }
 
         // POST: Activities/Edit/5
@@ -109,20 +124,21 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StarDate,EndDate")] Activity activity)
+        public async Task<IActionResult> Edit(int id, /*[Bind("Id,Name,Description,StarDate,EndDate")]*/ ActivityViewModel activity)
         {
-            if (id != activity.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+            try
                 {
-                    _context.Update(activity);
-                    await _context.SaveChangesAsync();
-                }
+                    var ac= await _context.Activity.FindAsync(id);
+               
+                    ac.Name = activity.Name;
+                    ac.StartDate = activity.StartDate;
+                    ac.EndDate = activity.EndDate;
+                    ac.Description = activity.Description;
+                    ac.ActivityTypeId=activity.ActivityTypeId;
+
+                _context.Update(ac);
+                await _context.SaveChangesAsync();
+                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ActivityExists(activity.Id))
@@ -134,27 +150,34 @@ namespace LMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(activity);
+            TempData["Message"] = "Activity \"" + activity.Name + "\" is updated";
+            string str = "/Courses/Details/" + activity.ForwardCourseId.ToString();
+            return Redirect(str);
+           
         }
 
+        
+
         // GET: Activities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id , int forwardId)
         {
-            if (id == null || _context.Activity == null)
-            {
-                return NotFound();
-            }
+            //if (id == null || _context.Activity == null)
+            //{
+            //    return NotFound();
+            //}
 
             var activity = await _context.Activity
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);           
             if (activity == null)
             {
                 return NotFound();
             }
-
-            return View(activity);
+            _context.Activity.Remove(activity);
+            await _context.SaveChangesAsync();
+            TempData["Message"] = "Activity \"" + activity.Name + "\" is deleted";
+            string str = "/Courses/Details/" + forwardId.ToString();
+            return Redirect(str);
+            //return View(activity);
         }
 
         // POST: Activities/Delete/5

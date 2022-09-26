@@ -62,8 +62,8 @@ namespace LMS.Web.Controllers
                 Name = course.Name,
                 Description = course.Description,
                 StartDate = course.StartDate,
-                EndDate = course.EndDate
-
+                EndDate = course.EndDate,
+                ForwardCourseId = (int)id
             };
             if (course == null)
             {
@@ -84,14 +84,18 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StarDate,EndDate")] Course course)
+        public async Task<IActionResult> CreateCourse(Course course)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(course);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = "Course is added";
+                string str = "/Courses/IndexTeacher";
+                return Redirect(str);
+                //return RedirectToAction(nameof(Index));
             }
+            TempData["Message"] = "Course is not added";
             return View(course);
         }
 
@@ -100,7 +104,7 @@ namespace LMS.Web.Controllers
         public async Task<IActionResult> CreateModule(CoursesViewModel viewModel)
         {
            CoursesViewModel coursesViewModel=null;
-            if (ModelState.IsValid)
+            try
             {
                 var module2 = new Module
                 {
@@ -108,40 +112,25 @@ namespace LMS.Web.Controllers
                     Name = viewModel.ModuleName,
                     Description = viewModel.ModuleDescription,
                     StartDate = viewModel.ModuleStartDate,
-                    EndDate = viewModel.ModuleEndDate                  
+                    EndDate = viewModel.ModuleEndDate
                 };
                 _context.Module.Add(module2);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Module \""+ viewModel.ModuleName+"\" Added ";
-                return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
+            } catch (DbUpdateConcurrencyException)
+            { 
+                   TempData["Message"] = "Module not Added ";
+                string strr = "/Courses/Details/" + viewModel.Id;
+                return Redirect(strr);
+               // return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
             }
+            TempData["Message"] = "Module \"" + viewModel.ModuleName + "\" is updated";
+            string str = "/Courses/Details/" + viewModel.Id;
+            return Redirect(str);
 
-            if (!ModelState.IsValid)
-            {
-                var course = await _context.Course.FirstOrDefaultAsync(m => m.Id == viewModel.Id);
-                var resActivity = await _context.Activity.ToListAsync();
-                var resActivityType = await _context.ActivityType.ToListAsync();
-
-                var module = _context.Module
-                 .Where(v => v.CourseId == viewModel.Id)
-                 .ToList();
-
-                 coursesViewModel = new CoursesViewModel()
-                {
-                    Id = (int)viewModel.Id,
-                    listOfModules = module,
-                    ListOfActivity = resActivity,
-                    ListOfActivityType = resActivityType,
-                    Name = course.Name,
-                    Description = course.Description,
-                    StartDate = course.StartDate,
-                    EndDate = course.EndDate                   
-                };
-             TempData["Message"] = "Not Added ";
-             }
-
-            return View("Details",coursesViewModel);
-        }
+        //    TempData["Message"] = "Module \""+ viewModel.ModuleName+"\" Added ";
+        //    //return RedirectToAction(nameof(Details), viewModel);// new { id = viewModel.Id });
+        //return View("Details", coursesViewModel);
+    }
 
         // GET: Courses/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -268,7 +257,13 @@ namespace LMS.Web.Controllers
 
         public async Task<IActionResult> IndexStudent()
         {
-            
+
+            if (TempData["Origin"] is null) //test
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"]; //test
+
             var resCourse = await _context.Course.Include(g=>g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
@@ -301,9 +296,13 @@ namespace LMS.Web.Controllers
         }
 
 
-        public async Task<IActionResult> IndexTeacher()
+        public async Task<IActionResult> IndexTeacher(string origin)
         {
-
+            if (TempData["Origin"] is null)
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"];
             var resCourse = await _context.Course.Include(g => g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
@@ -344,13 +343,31 @@ namespace LMS.Web.Controllers
         public async Task<IActionResult> UploadFile(IFormFile FormFile)
         {
 
+            
             var filename = ContentDispositionHeaderValue.Parse(FormFile.ContentDisposition).FileName.Trim('"');
              var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Documents", FormFile.FileName);
-           // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+            // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+
+            if (FileExist(path)){ Console.WriteLine("existerar"); }
+
             using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
             }
+            // ReturnAssignment(filename);
+            var document = new Document
+            {
+                DocumentName = filename,
+                LogDate = DateTime.Now,
+                Description = "returning Assignment",
+                UserId = int.Parse(userManager.GetUserId(User)),
+                PathLog = path,
+                Creator= int.Parse(userManager.GetUserId(User)),
+                CreatorName=userManager.GetUserName(User)
+            };
+            _context.Document.AddAsync(document);
+            await _context.SaveChangesAsync();
+
 
 
             return RedirectToAction("StudentDocuments", "Courses");
@@ -374,8 +391,18 @@ namespace LMS.Web.Controllers
             {
                 files.Add(new FileModel { FileName = Path.GetFileName(filePath) });
             }
+            
+            var documents= _context.Document.ToList();
 
-            return View(files);
+            var assignmentViewModel = new AssignmentViewModel
+            {
+                Documents = documents,
+
+                Files = files
+            };
+
+
+            return View(assignmentViewModel);
         }
 
         public FileResult DownloadFile(string fileName)
@@ -390,9 +417,35 @@ namespace LMS.Web.Controllers
 
             //Send the File to Download.
             return File(bytes, "application/octet-stream", fileName);
+            
+
         }
 
+        //public async void ReturnAssignment(string ffileName)
+        //{
+        //    var document = new Document
+        //    {
+        //        DocumentName = ffileName,
+        //        LogDate = DateTime.Now,
+        //        Description = "returning Assignment",
+        //        UserId = int.Parse(userManager.GetUserId(User)),
+        //        PathLog = "test"
+        //    };
+        //    _context.Document.AddAsync(document);
+        //    await _context.SaveChangesAsync();
 
 
-    }
+        //}
+        public bool FileExist(string testFile) 
+        {
+            string wwwPath = _hostingEnv.WebRootPath;
+            string[] filePaths = Directory.GetFiles(wwwPath + "/documents/");
+            foreach (var item in filePaths)
+            {
+              if (item== testFile) { return true; }
+              
+            }
+            return false;
+        }
+    } 
 }

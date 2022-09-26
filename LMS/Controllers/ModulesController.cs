@@ -80,19 +80,23 @@ namespace LMS.Web.Controllers
         //}
 
         // GET: Modules/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int forwardId)
         {
-            if (id == null || _context.Module == null)
+            var module = await _context.Module.FindAsync(id);
+            ModulesViewModel moduleViewModel = new ModulesViewModel()
+            {
+                Name = module.Name,
+                Description = module.Description,
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                CourseId = forwardId,
+                ForwardCourseId = forwardId
+            };
+            if (module == null)
             {
                 return NotFound();
             }
-
-            var @module = await _context.Module.FindAsync(id);
-            if (@module == null)
-            {
-                return NotFound();
-            }
-            return View(@module);
+            return View(moduleViewModel);
         }
 
         // POST: Modules/Edit/5
@@ -100,59 +104,58 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StarDate,EndDate")] Module @module)
+        public async Task<IActionResult> Edit(int id, ModulesViewModel modelView)
         {
-            if (id != @module.Id)
+           try
             {
-                return NotFound();
+                var module = await _context.Module.FindAsync(id);
+                module.Name = modelView.Name;
+                module.Description = modelView.Description;
+                module.StartDate = modelView.StartDate;
+                module.EndDate = modelView.EndDate;
+                _context.Update(module);
+                await _context.SaveChangesAsync();
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
-                {
-                    _context.Update(@module);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ModuleExists(@module.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToAction("IndexTeacher", "Course");
-            }
-            return View(@module);
+                TempData["Message"] = "Module not updated";
+                string strr = "/Courses/Details/" + modelView.ForwardCourseId;
+                return Redirect(strr);
+            }                      
+            TempData["Message"] = "Module \"" + modelView.Name + "\" is updated";
+            string str = "/Courses/Details/" + modelView.ForwardCourseId;
+            return Redirect(str);           
         }
 
         // GET: Modules/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int forwardId)
         {
             if (id == null || _context.Module == null)
             {
                 return NotFound();
             }
-
-            var @module = await _context.Module
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@module == null)
+            var module = await _context.Module.FirstOrDefaultAsync(m => m.Id == id);
+            var modulesViewModel = new ModulesViewModel()
+            {
+                Name = module.Name,
+                Description = module.Description,
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                CourseId = module.CourseId,
+                ForwardCourseId = forwardId
+            };
+            if (module == null)
             {
                 return NotFound();
             }
 
-            return View(@module);
+            return View(modulesViewModel);
         }
 
         // POST: Modules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, ModulesViewModel modelView)
         {
             if (_context.Module == null)
             {
@@ -165,7 +168,10 @@ namespace LMS.Web.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            TempData["Message"] = "Module is Deleted";
+            string str = "/Courses/Details/" + modelView.ForwardCourseId;
+            return Redirect(str);
+           // return RedirectToAction(nameof(Index));
         }
 
         private bool ModuleExists(int id)

@@ -3,14 +3,25 @@
 @{
     ViewData["Title"] = "Create";
 }
+@if (TempData["Message"] != null)
+{
+<div class="row pt-2 pb-2">
+        <div class="col-12">
+	       <div class="alert alert-info text-center">
+	          <strong>@TempData["Message"]</strong>
+	       </div>
+        </div>
+    </div>
+}
+<div class="pt-5">
+ <h3>Create course</h3>
+ </div>
 
-<h1>Create</h1>
 
-<h4>Course</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-controller="Courses" asp-action="CreateCourse">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -32,15 +43,15 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-5">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="IndexTeacher">Back to List</a>
+<div class="pt-5">
+    <a asp-action="IndexTeacher">Back to teacher</a>
 </div>
 
 @section Scripts {
