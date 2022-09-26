@@ -1,4 +1,5 @@
 ﻿@using LMS.Core.Entities
+@model LMS.Core.Entities.Course
 
 
 @{
@@ -12,6 +13,6 @@
 </p>
 
 <tbody id="courses">
-    <partial name="Index_Partial" model ="@Model.Courses"/>
+    <partial name="Index_Partial_Course" model ="@Model"/>
 </tbody>
 

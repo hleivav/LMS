@@ -11,6 +11,8 @@ namespace LMS.Core.Entities
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime LogDate { get; set; }
         public  string PathLog { get; set; }
+        public int Creator { get; set; }
+        public string CreatorName { get; set; }
         //foreign key
         public int UserId { get; set; }
         //

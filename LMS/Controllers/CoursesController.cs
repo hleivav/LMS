@@ -10,19 +10,23 @@ using LMS.Data.Data;
 using Microsoft.AspNetCore.Authorization;
 using LMS.Core.Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using System.Net.Http.Headers;
 
 namespace LMS.Web.Controllers
 {
     [Authorize]
     public class CoursesController : Controller
     {
+        private IHostingEnvironment _hostingEnv;
         private readonly ApplicationDbContext _context;
         private Task<string?> indexViewModel;
         private readonly UserManager<User> userManager;
-        public CoursesController(ApplicationDbContext context, UserManager<User> userManager)
+        public CoursesController(ApplicationDbContext context, UserManager<User> userManager, IHostingEnvironment hostingEnv)
         {
             _context = context;
             this.userManager = userManager;
+            _hostingEnv = hostingEnv;
         }
 
         // GET: Courses
@@ -176,7 +180,7 @@ namespace LMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexTeacher));
             }
             return View(course);
         }
@@ -208,25 +212,58 @@ namespace LMS.Web.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Course'  is null.");
             }
-            var course = await _context.Course.FindAsync(id);
-            if (course != null)
-            {
-                _context.Course.Remove(course);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var course = await _context.Course
+                .Include(c => c.Users)
+                .Include(c => c.Modules)
+                .ThenInclude(m => m.Activities)
+                .FirstOrDefaultAsync(m => m.Id == id);
+                //var module = _context.Module
+                //                 .Where(v => v.CourseId == id)
+                //                 .ToList();
+
+                //int i = 0;
+                //while(module.Count > 0)
+                //{
+                //    var activities = _context.Activity
+                //        .Where(m => m.ModuleId == module[i].Id)
+                //        .ToList();
+                    
+                //    if (module[i].Activities.Count > 0)
+                //    {
+                //        for (int j = 0; j < activities.Count - 1; j++)
+                //        {
+                //            _context.Activity.Remove(activities[j]); //bort med alla aktiviteter
+                //            int xxx = j;
+                //            await _context.SaveChangesAsync();
+                //        }
+                //    }
+                //    _context.Module.Remove(module[i]); //bort med modulen när aktiviteterna är borttagna eller när de inte fanns alls.
+                //    i++;
+                //    await _context.SaveChangesAsync();
+                //}
+                
+            _context.Course.Remove(course); //bort med kursen när inga moduler finns.
+            _context.RemoveRange(course.Users);
+ 
+            await _context.SaveChangesAsync();////den här
+            return RedirectToAction(nameof(IndexTeacher));
         }
 
         private bool CourseExists(int id)
         {
           return (_context.Course?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
+       
 
         public async Task<IActionResult> IndexStudent()
         {
-            
+
+            if (TempData["Origin"] is null) //test
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"]; //test
+
             var resCourse = await _context.Course.Include(g=>g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
@@ -259,9 +296,13 @@ namespace LMS.Web.Controllers
         }
 
 
-        public async Task<IActionResult> IndexTeacher()
+        public async Task<IActionResult> IndexTeacher(string origin)
         {
-
+            if (TempData["Origin"] is null)
+            {
+                TempData["Origin"] = "op1";
+            }
+            //var test = TempData["Origin"];
             var resCourse = await _context.Course.Include(g => g.Users).ToListAsync();
             var resTeacher = await userManager.GetUsersInRoleAsync("Teacher");
             var resStudent = await userManager.GetUsersInRoleAsync("Student");
@@ -291,5 +332,120 @@ namespace LMS.Web.Controllers
         }
 
 
-    }
+        //public ActionResult StudentDocuments()
+        //{
+        //    return View();
+        //}
+
+
+
+            [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile FormFile)
+        {
+
+            
+            var filename = ContentDispositionHeaderValue.Parse(FormFile.ContentDisposition).FileName.Trim('"');
+             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Documents", FormFile.FileName);
+            // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
+
+            if (FileExist(path)){ Console.WriteLine("existerar"); }
+
+            using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+            {
+                await FormFile.CopyToAsync(stream);
+            }
+            // ReturnAssignment(filename);
+            var document = new Document
+            {
+                DocumentName = filename,
+                LogDate = DateTime.Now,
+                Description = "returning Assignment",
+                UserId = int.Parse(userManager.GetUserId(User)),
+                PathLog = path,
+                Creator= int.Parse(userManager.GetUserId(User)),
+                CreatorName=userManager.GetUserName(User)
+            };
+            _context.Document.AddAsync(document);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction("StudentDocuments", "Courses");
+
+        }
+
+        
+
+        // GET: 
+        public ActionResult StudentDocuments()
+        {
+            
+            //Fetch all files in the Folder (Directory).
+            //string[] filePaths = Directory.GetFiles(Server.MapPath("~/Files/"));
+            string wwwPath = _hostingEnv.WebRootPath;
+            string[] filePaths = Directory.GetFiles(wwwPath+"/documents/");
+
+            //Copy File names to Model collection.
+            List <FileModel> files = new List<FileModel>();
+            foreach (string filePath in filePaths)
+            {
+                files.Add(new FileModel { FileName = Path.GetFileName(filePath) });
+            }
+            
+            var documents= _context.Document.ToList();
+
+            var assignmentViewModel = new AssignmentViewModel
+            {
+                Documents = documents,
+
+                Files = files
+            };
+
+
+            return View(assignmentViewModel);
+        }
+
+        public FileResult DownloadFile(string fileName)
+        {
+            string wwwPath = _hostingEnv.WebRootPath;
+            //Build the File Path.
+            //string path = Server.MapPath("~/Files/") + fileName;
+            string path = wwwPath +"/Documents/"+ fileName;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileName);
+            
+
+        }
+
+        //public async void ReturnAssignment(string ffileName)
+        //{
+        //    var document = new Document
+        //    {
+        //        DocumentName = ffileName,
+        //        LogDate = DateTime.Now,
+        //        Description = "returning Assignment",
+        //        UserId = int.Parse(userManager.GetUserId(User)),
+        //        PathLog = "test"
+        //    };
+        //    _context.Document.AddAsync(document);
+        //    await _context.SaveChangesAsync();
+
+
+        //}
+        public bool FileExist(string testFile) 
+        {
+            string wwwPath = _hostingEnv.WebRootPath;
+            string[] filePaths = Directory.GetFiles(wwwPath + "/documents/");
+            foreach (var item in filePaths)
+            {
+              if (item== testFile) { return true; }
+              
+            }
+            return false;
+        }
+    } 
 }
