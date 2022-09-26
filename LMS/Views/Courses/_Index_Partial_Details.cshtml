@@ -1,14 +1,109 @@
 ﻿@model LMS.Core.Entities.ViewModels.CoursesViewModel
 
-<div class="row pb-3">
-    <div class="col float-start">
+@*<div class="row pb-3">*@
+
+    <div class="text-center p-3" style="color: #293a7d;">
+         
+    <h3 style="background-color: hsl(218, 81%,85%); padding:3%; border-radius:3%; ">Modules With Related Activities </h3>
+
+    </div>
+
+ <div class="col-row-12">
+   
+
+@if (TempData["Message"] != null)
+{
+<div class="row pt-2 pb-2">
+        <div class="col-12">
+	       <div class="alert alert-info text-center">
+	          <strong>@TempData["Message"]</strong>
+	       </div>
+        </div>
+    </div>
+}
+  
+@{
+    int i = 1;
+    string str= "iOne";    
+}
+
+<div class="accordion" id="accordionExample">
+   @foreach (var moduleName in Model.listOfModules)
+    {
+        str += i.ToString();
+        <div class="accordion" id="accordionExample">  
+          <div class="accordion-item">
+
+             <h2 class="accordion-header" id="headingOne">
+
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
+              @Html.DisplayFor(modelItem => moduleName.Name)
+               </button>
+
+             </h2>
+
+          <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+              <div class="row">
+
+                  <div class="col-6  border-end">
+                      <div class="text-center border border-primary"> <strong>Module</strong></div>
+                    @*<strong>MODULEID: @Html.DisplayFor(modelItem => moduleName.Id)</strong> <br>*@
+                    <strong>Name: </strong>@Html.DisplayFor(modelItem => moduleName.Name)<br>
+                    <strong>Start Date: </strong>@Html.DisplayFor(modelItem => moduleName.StartDate)<br>
+                    <strong>End date: </strong>@Html.DisplayFor(modelItem => moduleName.EndDate)<br>
+                    <strong>Description: </strong>@Html.DisplayFor(modelItem => moduleName.Description)                 
+                    </div>
+
+                    <div class="col-6">
+                        <div class="text-center border border-primary"> <strong>Activities |  Click to edit  <i class="fa fa-mouse-pointer"></i></strong></div>
+                    @foreach (var activity in Model.ListOfActivity)
+                    {
+                        if(activity.ModuleId == moduleName.Id){                      
+                         <a href="/Activities/Edit/@activity.Id" data-bs-placement="top"  data-bs-html="true" data-bs-toggle="tooltip"
+                         title="<div>ActivivyType: @activity.ActivityTypeId<br>@activity.StartDate<br>@activity.EndDate<br> @activity.Description</div>"> @activity.Name</a><br>
+                        }
+                    }
+                    <div class="col float-start pt-2">
+                         <a class="btn btn-primary" asp-controller="Activities" asp-action="Create" asp-route-id="@moduleName.Id">New activity  <i class="fa fa-plus-circle"></i></a> 
+                    </div>
+                   </div>
+              </div>
+              <div class="row mt-0">
+                  <div class="col-6 ">
+                     <div class="float-start">                       
+                         <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id">Edit <i class="fa fa-edit"></i></a> 
+                     </div>                     
+               </div>
+          </div>
+          </div>
+       </div>
+    </div>  
+        </div>
+        i++;
+    }
+  </div>
+
+
+   
+  <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+  </script>
+  
+  </div>
+
+  <div class="col-lf-6 p-3  h-md-100">
+    <div class="col text-start">
           <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
-           New Module
+           New Module <i class="fa fa-plus-circle"></i>
           </button>
           
        <div class="collapse" id="createModule">
           <div class="card card-body">         
-              <div class="card" style="width: 18rem;">
+              <div class="card" style="width: 25rem; padding-top:5%">
                   <div class="card-body">     
                       <div class="row">
                          <div class="col">
@@ -36,7 +131,7 @@
                                   <span asp-validation-for="@Model.ModuleEndDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group pt-3">
-                                  <input type="submit" value="Save" class="btn btn-primary" />
+                                  <input type="submit" value="Save" class="btn btn-primary "/> <i class="fa fa-check"></i>
                                 </div>
                          </form>
                         </div>
@@ -47,82 +142,3 @@
          </div>
        </div>
      </div>
-     
-     <div class="text-center pb-5"> <h3>Modules And Related Activities </h3></div>
-
-@if (TempData["Message"] != null)
-{
-<div class="row pt-2 pb-2">
-        <div class="col-12">
-	       <div class="alert alert-info text-center">
-	          <strong>@TempData["Message"]</strong>
-	       </div>
-        </div>
-    </div>
-}
-  
-@{
-    int i = 1;
-    string str= "iOne";    
-}
-
-<div class="accordion" id="accordionExample">
-   @foreach (var moduleName in Model.listOfModules)
-    {
-        str += i.ToString();
-        <div class="accordion" id="accordionExample">  
-          <div class="accordion-item">
-             <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
-              @Html.DisplayFor(modelItem => moduleName.Name)
-               </button>
-             </h2>
-          <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-              <div class="row">
-                  <div class="col-6">
-                      <div class="text-center"> <strong>Module</strong></div>
-                    @*<strong>MODULEID: @Html.DisplayFor(modelItem => moduleName.Id)</strong> <br>*@
-                    <strong>Name: </strong>@Html.DisplayFor(modelItem => moduleName.Name)<br>
-                    <strong>Start Date: </strong>@Html.DisplayFor(modelItem => moduleName.StartDate)<br>
-                    <strong>End date: </strong>@Html.DisplayFor(modelItem => moduleName.EndDate)<br>
-                    <strong>Description: </strong>@Html.DisplayFor(modelItem => moduleName.Description)<br>                   
-                    </div>
-                    <div class="col-6">
-                        <div class="text-center"> <strong>Activities.Click on the link to edit.</strong></div>
-                    @foreach (var activity in Model.ListOfActivity)
-                    {
-                        if(activity.ModuleId == moduleName.Id){                      
-                         <a href="/Activities/Edit/@activity.Id" data-bs-placement="top"  data-bs-html="true" data-bs-toggle="tooltip"
-                         title="<div>ActivivyType: @activity.ActivityTypeId<br>@activity.StartDate<br>@activity.EndDate<br> @activity.Description</div>"> @activity.Name</a><br>
-                        }
-                    }
-                    <div class="col float-end pt-5">
-                         <a class="btn btn-primary" asp-controller="Activities" asp-action="Create" asp-route-id="@moduleName.Id">New activity</a> 
-                    </div>
-                   </div>
-              </div>
-              <div class="row">
-                  <div class="col-6">
-                     <div class="float-start">                       
-                         <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id">Edit</a> 
-                     </div>                     
-               </div>
-          </div>
-          </div>
-       </div>
-    </div>  
-        </div>
-        i++;
-    }
-  </div>
-
-   
-  <script>
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-      })
-  </script>
-  
-  
