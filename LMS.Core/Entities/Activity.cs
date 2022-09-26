@@ -7,6 +7,7 @@ namespace LMS.Core.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+       
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime StartDate { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

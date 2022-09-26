@@ -80,19 +80,27 @@ namespace LMS.Web.Controllers
         //}
 
         // GET: Modules/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int forwardId)
         {
-            if (id == null || _context.Module == null)
-            {
-                return NotFound();
-            }
+            //if (id == null || _context.Module == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var @module = await _context.Module.FindAsync(id);
-            if (@module == null)
+            var module = await _context.Module.FindAsync(id);
+            ModulesViewModel moduleViewModel = new ModulesViewModel()
+            {
+                Name = module.Name,
+                Description = module.Description,
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                CourseId = forwardId,
+            };
+            if (module == null)
             {
                 return NotFound();
             }
-            return View(@module);
+            return View(moduleViewModel);
         }
 
         // POST: Modules/Edit/5

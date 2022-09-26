@@ -1,5 +1,6 @@
 ﻿@model LMS.Core.Entities.ViewModels.CoursesViewModel
 
+
 <div class="row pb-3">
     <div class="col float-start">
           <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
@@ -18,22 +19,22 @@
                                   <div class="form-group">
                                      <label asp-for="ModuleName" class="control-label"></label>
                                      <input asp-for="@Model.ModuleName" class="form-control" />
-                                     <span asp-validation-for="@Model.ModuleName" class="text-danger"></span>
+                                     <span asp-validation-for="ModuleName" class="text-danger"></span>
                                   </div>
                                   <div class="form-group">
                                     <label asp-for="ModuleDescription" class="control-label"></label>
                                     <input asp-for="@Model.ModuleDescription" class="form-control" />
-                                    <span asp-validation-for="@Model.ModuleDescription" class="text-danger"></span>
+                                    <span asp-validation-for="ModuleDescription" class="text-danger"></span>
                                     </div>
                                  <div class="form-group">
                                    <label asp-for="ModuleStartDate" class="control-label"></label>
                                    <input asp-for="@Model.ModuleStartDate" class="form-control" />
-                                   <span asp-validation-for="@Model.ModuleStartDate" class="text-danger"></span>
+                                   <span asp-validation-for="ModuleStartDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                   <label asp-for="ModuleEndDate" class="control-label"></label>
                                   <input asp-for="@Model.ModuleEndDate" class="form-control" />
-                                  <span asp-validation-for="@Model.ModuleEndDate" class="text-danger"></span>
+                                  <span asp-validation-for="ModuleEndDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group pt-3">
                                   <input type="submit" value="Save" class="btn btn-primary" />
@@ -48,8 +49,6 @@
        </div>
      </div>
      
-     <div class="text-center pb-5"> <h3>Modules And Related Activities </h3></div>
-
 @if (TempData["Message"] != null)
 {
 <div class="row pt-2 pb-2">
@@ -59,11 +58,13 @@
 	       </div>
         </div>
     </div>
-}
-  
+} 
+     <div class="text-center pb-5">
+         <h3>Modules And Related Activities </h3>
+     </div>
 @{
     int i = 1;
-    string str= "iOne";    
+    string str= "iOne";
 }
 
 <div class="accordion" id="accordionExample">
@@ -74,7 +75,7 @@
           <div class="accordion-item">
              <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@str" aria-expanded="false" aria-controls="@str">
-              @Html.DisplayFor(modelItem => moduleName.Name)
+              Module:@moduleName.Id @Html.DisplayFor(modelItem => moduleName.Name)
                </button>
              </h2>
           <div id="@str" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -92,20 +93,24 @@
                         <div class="text-center"> <strong>Activities.Click on the link to edit.</strong></div>
                     @foreach (var activity in Model.ListOfActivity)
                     {
-                        if(activity.ModuleId == moduleName.Id){                      
-                         <a href="/Activities/Edit/@activity.Id" data-bs-placement="top"  data-bs-html="true" data-bs-toggle="tooltip"
-                         title="<div>ActivivyType: @activity.ActivityTypeId<br>@activity.StartDate<br>@activity.EndDate<br> @activity.Description</div>"> @activity.Name</a><br>
+                        if(activity.ModuleId == moduleName.Id)
+                        {
+                            <a href="/Activities/Edit?id=@activity.Id&forwardId=@Model.ForwardCourseId">@activity.Name</a><br>
                         }
                     }
                     <div class="col float-end pt-5">
-                         <a class="btn btn-primary" asp-controller="Activities" asp-action="Create" asp-route-id="@moduleName.Id">New activity</a> 
+                         <a class="btn btn-primary" asp-controller="Activities" asp-action="Create"
+                         asp-route-id="@moduleName.Id" asp-route-forwardId="@Model.ForwardCourseId">New activity</a> 
                     </div>
                    </div>
               </div>
               <div class="row">
                   <div class="col-6">
                      <div class="float-start">                       
-                         <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id">Edit</a> 
+                         <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id"
+                         asp-route-forwardId="@Model.ForwardCourseId">Edit</a> 
+                          <a class="btn btn-danger" asp-controller="Modules" asp-action="Delete"
+                         asp-route-id="@moduleName.Id" asp-route-forwardId="@Model.ForwardCourseId">Delete</a> 
                      </div>                     
                </div>
           </div>

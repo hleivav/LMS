@@ -58,8 +58,8 @@ namespace LMS.Web.Controllers
                 Name = course.Name,
                 Description = course.Description,
                 StartDate = course.StartDate,
-                EndDate = course.EndDate
-
+                EndDate = course.EndDate,
+                ForwardCourseId = (int)id
             };
             if (course == null)
             {
@@ -80,7 +80,7 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StarDate,EndDate")] Course course)
+        public async Task<IActionResult> CreateCourse([Bind("Id,Name,Description,StarDate,EndDate")] Course course)
         {
             if (ModelState.IsValid)
             {

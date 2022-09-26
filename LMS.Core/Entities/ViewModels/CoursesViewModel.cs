@@ -19,11 +19,17 @@ namespace LMS.Core.Entities.ViewModels
         [Required]
         public string ModuleName { get; set; } = String.Empty;
         [DisplayName("Description")]
+        [Required]
         public string ModuleDescription { get; set; } =String.Empty;
         [DisplayName("Start")]
+        [Required]
         public DateTime ModuleStartDate { get; set; }
         [DisplayName("End")]
+        [Required]
         public DateTime ModuleEndDate { get; set; }
+
+        public int ForwardCourseId { get; set; }
+        
         public List<Activity> ListOfActivity { get; set; }= new List<Activity>();
         public List<ActivityType> ListOfActivityType { get; set; } = new List<ActivityType>();
         public List<Module> listOfModules { get; set; } = new List<Module>();
