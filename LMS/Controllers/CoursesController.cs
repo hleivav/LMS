@@ -351,6 +351,20 @@ namespace LMS.Web.Controllers
             {
                 await FormFile.CopyToAsync(stream);
             }
+            // ReturnAssignment(filename);
+            var document = new Document
+            {
+                DocumentName = filename,
+                LogDate = DateTime.Now,
+                Description = "returning Assignment",
+                UserId = int.Parse(userManager.GetUserId(User)),
+                PathLog = path,
+                Creator= int.Parse(userManager.GetUserId(User)),
+                CreatorName=userManager.GetUserName(User)
+            };
+            _context.Document.AddAsync(document);
+            await _context.SaveChangesAsync();
+
 
 
             return RedirectToAction("StudentDocuments", "Courses");
@@ -374,8 +388,18 @@ namespace LMS.Web.Controllers
             {
                 files.Add(new FileModel { FileName = Path.GetFileName(filePath) });
             }
+            
+            var documents= _context.Document.ToList();
 
-            return View(files);
+            var assignmentViewModel = new AssignmentViewModel
+            {
+                Documents = documents,
+
+                Files = files
+            };
+
+
+            return View(assignmentViewModel);
         }
 
         public FileResult DownloadFile(string fileName)
@@ -390,9 +414,25 @@ namespace LMS.Web.Controllers
 
             //Send the File to Download.
             return File(bytes, "application/octet-stream", fileName);
+            
+
         }
 
+        //public async void ReturnAssignment(string ffileName)
+        //{
+        //    var document = new Document
+        //    {
+        //        DocumentName = ffileName,
+        //        LogDate = DateTime.Now,
+        //        Description = "returning Assignment",
+        //        UserId = int.Parse(userManager.GetUserId(User)),
+        //        PathLog = "test"
+        //    };
+        //    _context.Document.AddAsync(document);
+        //    await _context.SaveChangesAsync();
 
+
+        //}
 
     }
 }

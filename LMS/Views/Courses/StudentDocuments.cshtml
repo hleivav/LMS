@@ -1,9 +1,9 @@
 ﻿@using LMS.Core.Entities
 @using LMS.Core.Entities.ViewModels
 @using Microsoft.AspNetCore.Identity
-
+@model AssignmentViewModel
 @inject UserManager<User> UserManager
-@*@model List<FileModel>*@
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -14,7 +14,7 @@
 
 
 
-<form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
+@*<form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
     <dl>
         <dt>
             <label>Upload</label>
@@ -26,14 +26,14 @@
     </dl>
     <input class="btn" type="submit" value="Upload" />
 </form>
+*@
 
-
-<table>
+@*<table>
     <tr>
         <th>File Name</th>
         <th></th>
     </tr>
-    @foreach (FileModel file in Model)
+    @foreach (FileModel file in Model.Files  )
     {
         <tr>
             <td>@file.FileName</td>
@@ -41,3 +41,76 @@
         </tr>
     }
 </table>
+*@
+
+
+    <tr>
+        <th>Assignments:</th><br />
+        <th></th>
+    </tr>
+@{
+    bool test = false;
+}
+    @foreach (var item  in Model.Documents)
+    {
+        <tr>
+        @if ((item.UserId == studentId)&& (item.Description != "returning Assignment"))
+            {
+                <td>@item.DocumentName  from:  @item.CreatorName</td><br />
+            <td>@Html.ActionLink("Download", "DownloadFile", new { fileName = item.DocumentName })</td><br />
+
+
+
+
+
+                <td>Due Date: @item.LogDate.AddDays(7) </td><br />
+            @if (item.LogDate.AddDays(7) < DateTime.Now)
+            {
+                
+                <p class="text-danger">You are late</p>
+            }
+            <br />
+            <br />
+            <p>Return Assignment</p>
+            
+            <form enctype="multipart/form-data" method="post" asp-controller="courses" asp-action="UploadFile">
+                <dl>
+                    <dt>
+                        <label>Upload</label>
+                    </dt>
+                    <dd>
+                        <input type="file" name="FormFile" id="FormFile">
+
+                    </dd>
+                </dl>
+                <input class="btn" type="submit" value="Upload" />
+            </form>
+            @if (item.Description == "returning Assignment")
+            {
+                <br />
+                <p>Assignment Returned</p>
+                <br />
+            }
+           
+           
+            
+                test = true;
+        }
+            
+        </tr>
+        
+
+
+
+    }
+
+
+
+
+@if (test==false)
+{
+    <p>No Assignments today.</p>
+}
+<br />
+
+<a asp-action="IndexStudent">Back to Homepage</a>

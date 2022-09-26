@@ -116,6 +116,12 @@ namespace LMS.Data.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Creator")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatorName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
