@@ -91,12 +91,17 @@ namespace LMS.Web.Controllers
         // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Activity == null)
+           var activity = await _context.Activity.FindAsync(id);
+            ActivityViewModel activityViewModel = new ActivityViewModel()
             {
-                return NotFound();
-            }
-
-            var activity = await _context.Activity.FindAsync(id);
+                Id = id,
+                Name = activity?.Name,
+                Description = activity?.Description,
+                StartDate = activity.StartDate,
+                EndDate = activity.EndDate,
+                ForwardCourseId = forwardId,
+                ActivityTypeId = activity.ActivityTypeId
+            };
             if (activity == null)
             {
                 return NotFound();
@@ -109,16 +114,9 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StarDate,EndDate")] Activity activity)
+        public async Task<IActionResult> Edit(int id, ActivityViewModel activity)
         {
-            if (id != activity.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+            try
                 {
                     _context.Update(activity);
                     await _context.SaveChangesAsync();
