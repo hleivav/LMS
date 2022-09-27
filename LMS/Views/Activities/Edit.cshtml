@@ -55,8 +55,14 @@
              <div class="form-group">
            
                 <input type="submit" value="Save" class="btn btn-success" />|
+                <a class="btn btn-danger" asp-controller="Activities" asp-action="Delete"
+                         asp-route-id="@Model.Id" asp-route-forwardId="@Model.ForwardCourseId">Delete</a>
+
                 <button class="btn btn-outline-success "> <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.ForwardCourseId">Back to modules and ativities</a></button>
            
+
+                 
+
             </div>
         </div>
         

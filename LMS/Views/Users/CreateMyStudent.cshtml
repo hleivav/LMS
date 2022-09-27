@@ -1,0 +1,62 @@
+﻿@model LMS.Core.Entities.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{
+    TempData["currentTab"] = "op3";
+}
+
+<section class="backgroundphoto">
+<div class="container1 inline-block">
+
+<h1 style="color: #293a7d;">Create a student </h1>
+
+<hr />
+<div class="col-md-12">
+    <div class="">
+        <form asp-controller="Users" asp-action="CreateStudent">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                <span asp-validation-for="CourseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+           <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="Password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group pt-3">
+                <input type="submit" value="Create" class="btn btn-success" /> |
+
+                    <button class="btn btn-outline-success "><a asp-controller="Courses" asp-action="IndexStudent">Back to home</a></button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
