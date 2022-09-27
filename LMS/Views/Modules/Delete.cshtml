@@ -6,10 +6,8 @@
 <section class="backgroundphoto">
 <div class="container1 inline-block">
 
-<h1 style="color: #293a7d;">Delete this module </h1>
-
-
-<hr />
+ <hr />
+ 
 <div>
     <dl class="row">
         <dt class = "col-sm-2">
@@ -40,6 +38,7 @@
     </dl>
     
     <form asp-controller="Modules" asp-action="Delete">
+        <input type="hidden" asp-for="ForwardCourseId" />
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> 
     </form>
