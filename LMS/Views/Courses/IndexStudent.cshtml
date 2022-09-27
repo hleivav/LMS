@@ -11,6 +11,15 @@
     ViewData["Title"] = "Home Page";
 }
 
+ @{
+        
+                    var studentId = int.Parse(@UserManager.GetUserId(User));        
+                    var courseId = @Model.ListOfUsers.Where(g => g.Id == studentId).FirstOrDefault().CourseId;
+                    var currentUserCorse = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().Name;
+                    var start = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate;
+                    var end = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate;
+                 }
+
 <section class="studentsida">
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,11 +28,12 @@
         <p class="display-6   ls-tigh wellcome" style="color:#629f8c; font-family: Century Gothic;">Welcome to Lexicon,
         you are logged in as a student!</p>
       </div>
-
-      <button class= "btn btn-outline-success docbutton " style="justify-content: center;">
+      <div class="row">
+          <div class="col-2">
+      <button class= "btn btn-outline-success docbutton " >
           <a asp-action="StudentDocuments">Go To Documents <i class="fa fa-file"></i></a>
       </button>
-
+      </div>
     <br />
 
 
@@ -34,19 +44,13 @@
 
             <div class="student" >
 
-             <p class="col-md-6 text-center  current">Your current course: <br />                             
+             <p class="col-md-6 text-center  current">Your current course:  <br />                             
     
 
-                @{
-        
-                    var studentId = int.Parse(@UserManager.GetUserId(User));        
-                    var courseId = @Model.ListOfUsers.Where(g => g.Id == studentId).FirstOrDefault().CourseId;
-                    var currentUserCorse = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().Name;
-                    var start = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate;
-                    var end = @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate;
-                 }
+               
                  @Html.DisplayFor(model => currentUserCorse) <br />
-                 @Html.DisplayFor(model => @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate) to @Html.DisplayFor(model =>  @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate)
+                    @Html.DisplayFor(model => @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().StartDate)<br />to<br /> 
+                    @Html.DisplayFor(model =>  @Model.ListOfCourses.Where(h => h.Id == courseId).FirstOrDefault().EndDate)
                  <br /><br />
 
              </p>
@@ -58,19 +62,17 @@
        <div class="col-md-4" style="font-size:large;">        
        <div class="student">
 
-          <p class= "col-md-4 text-center  current">Your current module:  <br />    
-      
-
-                @if (start>DateTime.Now | end<DateTime.Now)
+                        @if (start>DateTime.Now | end<DateTime.Now)
                 {
-                 <p class="NoModules">You have no modules at present</p> 
+                    <p class="NoModules">You have no Modules at present</p>
                 }
                            
                 @foreach (var item in Model.ListOfCourses.Where(m => m.Id == courseId).FirstOrDefault().Modules)
                 {
                   @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
-                  {
-                  <tr>
+                    {
+                        <p class="NoModules">Your current module:<br>
+                            <tr>
                     <td>
                       @Html.DisplayFor(modelItem => item.Name)
                            </td>
@@ -83,6 +85,7 @@
                             @Html.DisplayFor(modelItem => item.EndDate)
                            </td>
                            </tr>
+                           </p>
                   }
                 } <br /><br />
 
@@ -92,54 +95,57 @@
                             
         </div>
 
-   
 
 
 
-    
 
-     
 
-         <div class="col-md-4" > 
+
+      
+       
+         <div class="col-md-4" style="font-size:large;"  > 
             <div class="student" >
-
-             @foreach (var item in Model.ListOfActivity)
+                @if (start > DateTime.Now | end < DateTime.Now)
                 {
-                    @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+                    <p class="NoModules">You have no Activities at present</p>
+                }
+                else{
+                    @foreach (var item in Model.ListOfActivity)
                     {
 
+                        @if (item.StartDate < DateTime.Now && item.EndDate > DateTime.Now)
+                        {
 
-                    <p class= "col-md-4 text-center current">Your current Activity:
-                        <br>
+                                <p class= "col-md-4 text-center current">Your current Activity:
+                                    <br>
 
-                        <tr>
-                           <td>
-                             @Html.DisplayFor(modelItem => item.Name)
-                           </td>
-                           <br/>
-                           <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                           </td>
-                            to
-                           <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                           </td>
-                       </tr> <br/><br/>
-                   
-                     <td>
-                      @Html.DisplayFor(modelItem => item.ActivityType.Name)
-                      </td>
-                     </p>  
-                   
-                    }   
-            
-           
+                                    <tr>
+                                        <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <br/>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </td>
+                                        to
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                    </tr> <br/><br/>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ActivityType.Name)
+                                    </td>
+                                </p>
+                        }
+
+                    }
                 }
 
           </div>
          </div>
        
-        </div> @*Closes first row*@
+    </div> @*Closes first row*@
     
             <br /><br />
          
@@ -215,6 +221,9 @@
                                 @Html.DisplayFor(modelItem => act.ActivityType.Name)
 
                                     <br />
+                                    @Html.DisplayFor(modelItem => act.StartDate) to @Html.DisplayFor(modelItem => act.StartDate)
+
+
                                     <br /><hr>
                              </div>
                     
