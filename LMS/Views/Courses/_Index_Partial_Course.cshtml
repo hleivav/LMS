@@ -1,7 +1,13 @@
 ﻿@model IEnumerable<LMS.Core.Entities.Course>
-
-
-<div class="text-center pt-1 pb-3">
+<div class="row pt-3">
+    <div class="col float-start">
+        <a class="btn btn-success m-0 justify-content-center " asp-controller="Courses" asp-action="Create">New Course <i class="fa fa-plus-circle"></i></a> 
+     </div>
+ </div>
+ 
+ 
+ 
+ <div class="text-center pt-3 pb-3">
   <h3>All courses</h3>
 </div>
 
@@ -40,7 +46,7 @@
             </td>
             <td class=" btn display-inline-block">
 
-                 <button  class="btn btn-light px-1 mb-1" ><a asp-action="Details" asp-route-id="@item.Id">Modules and more <i class="fa fa-info"></i></a></button>
+                 <button  class="btn btn-light px-1 mb-1" ><a asp-action="Details" asp-route-id="@item.Id">Modules and details <i class="fa fa-info"></i></a></button>
 
                 <button class="btn btn-light px-1  mb-1 "><a asp-action="Edit" asp-route-id="@item.Id">Edit <i class="fa fa-edit"></i> </a> </button>
                 

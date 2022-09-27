@@ -1,18 +1,29 @@
-﻿@model LMS.Core.Entities.Activity
+﻿@model LMS.Core.Entities.ViewModels.ActivityViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
+<section class="backgroundphoto">
+<div class="container1 inline-block">
 
-<h1>Edit</h1>
-
-<h4>Activity</h4>
+<h1 style="color: #293a7d;">Edit this activity </h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+
+
+<div class="col-md-12">
+<form asp-action="Edit">
+
+        <div>
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+
+            </div>
+            <input type="hidden" asp-for="@Model.Id" />
+             <input type="hidden" asp-for="@Model.ForwardCourseId" />
+            <label asp-for="ActivityTypeId" class="control-label"></label>
+            <div class="form-group">
+                <select asp-for="ActivityTypeId" class="form-control" asp-items="ViewBag.ActivityTypeId"></select>
+                <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -25,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
+                <input asp-for="StartDate" asp-for="Month"  class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,17 +44,26 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            
+            <div class="pb-3 text-center">
+                <h4>Document</h4>
             </div>
+            <div class="row p-3  float-End">
+                   <input class="form-control" type="file" id="formFile">
+            </div>  
+            <br />
+             <div class="form-group">
+           
+                <input type="submit" value="Save" class="btn btn-success" />|
+                <button class="btn btn-outline-success "> <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.ForwardCourseId">Back to modules and ativities</a></button>
+           
+            </div>
+        </div>
+        
         </form>
     </div>
-</div>
-
-
-<div class="pt-5">
-    <a asp-controller="Courses" asp-action="IndexTeacher">Back to teacher</a>
-</div>
+    </div>
+    </section>
 
 
 @section Scripts {

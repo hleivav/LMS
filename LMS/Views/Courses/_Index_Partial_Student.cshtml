@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<LMS.Core.Entities.User>
-@{
-    TempData["currentTab"] = "op3";
-}
+<div class="row pt-3">
+    <div class="col float-start">
+        <a class="btn btn-success" asp-controller="User" asp-action="Create">New teacher <i class="fa fa-plus-circle"></i></a> 
+     </div>
+ </div>
 
 <div class="text-center pt-1 pb-3">
   <h3>All students</h3>

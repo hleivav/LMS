@@ -5,14 +5,18 @@
 <ul class="navright">
 @if (SignInManager.IsSignedIn(User))
 {
+    <p class="hellouser">
+   <a  class="border border-secondary btn border-1 nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><em><strong>HELLO</strong></em> @User.Identity?.Name!</a>
+   </p>
    
-        <a  class=" border border-secondary btn border-1 nav-link text-dark mx-4 float-end" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><em><strong>HELLO</strong></em> @User.Identity?.Name!</a>
-   
-   
+   <div class="row">
+       <div class="col-10"></div>
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark btn-danger">Log out <i class="fa fa-sign-out"></i></button>
         </form>
+     
     
+</div>
 }
 else
 {
@@ -24,3 +28,5 @@ else
     </li>*@
 }
 </ul>
+ <link rel="stylesheet"
+           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

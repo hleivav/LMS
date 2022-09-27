@@ -4,55 +4,55 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<section class="backgroundphoto">
+<div class="container1 inline-block">
 
-<div>
-    <h4>User</h4>
+<h1 style="color: #293a7d;">Details for this user</h1>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
-        </dd>
+        </dd></span>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
-        </dd>
+        </dd></span>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Course)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Course.Description)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd></span>
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd>*@
+      @*  <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NormalizedUserName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NormalizedUserName)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd></span>
+       @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NormalizedEmail)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NormalizedEmail)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd>*@
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.EmailConfirmed)
         </dt>
         <dd class = "col-sm-10">
@@ -75,14 +75,14 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ConcurrencyStamp)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd></span>
+       @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
         </dt>
         <dd class = "col-sm-10">
@@ -111,7 +111,14 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AccessFailedCount)
-        </dd>
+        </dd>*@
+        <BR />
+        <div>
+   <button class="btn btn-outline-success text-white"><a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a></button>   |
+    <button  class="btn btn-outline-success "><a asp-action="Index">Back to List</a></button>
+</div>
+
+
     </dl>
 </div>
 <div>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LMS.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -256,6 +256,8 @@ namespace LMS.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LogDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PathLog = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Creator = table.Column<int>(type: "int", nullable: false),
+                    CreatorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ActivityId = table.Column<int>(type: "int", nullable: true),
                     CourseId = table.Column<int>(type: "int", nullable: true),

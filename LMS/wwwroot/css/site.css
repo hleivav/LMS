@@ -3,13 +3,12 @@ html {
     font-family: Century Gothic;
 }
 
-@media (min-width: 768px) {
+
     html {
         font-size: 16px;
-        background-color: hsl(218, 71%, 95%);
         font-family: Century Gothic;
     }
-}
+
 
 html {
     position: relative;
@@ -19,7 +18,7 @@ html {
 
 body {
     margin-bottom: 0px;
-    background-color: hsl(218, 71%, 95%);
+    background-color: #eaf5f1;
     font-family: Century Gothic;
 }
 
@@ -39,7 +38,7 @@ body {
 
 
 .background-radial-gradient {
-    background-color: hsl(218, 41%, 15%);
+    background-color:#a7cab0;
     height:100%;
     background-position: left;
     background-repeat: no-repeat;
@@ -49,7 +48,6 @@ body {
 .footer {
    
     width: 90%;
-    /*outline-style: groove;*/
     text-align: center;
     text-decoration: overline;
     margin-inline-start: 6%;
@@ -62,6 +60,7 @@ body {
     text-align: center;
     padding: 1em;
     margin-left:36%;
+  
     
     
 }
@@ -70,12 +69,14 @@ body {
 /*content that shows information when we click nav bar
 */
 
-.teachertable {    
+.teachertable {
     background-color: white;
-    background: repeating-linear-gradient(90deg, hsl(218, 71%, 95%), hsl(218, 51%, 75%),hsl(218, 71%, 95%) );
+    background: repeating-linear-gradient(#c3e6c0,#cff1e6,white,#c3e6c0);
     font-family: Century Gothic;
-    border-block: solid;
-    margin:2%;
+    border-block: double;
+    border-left-style: double;
+    border-right-style: double;
+    margin: 2%;
 }
 
 .btn {
@@ -86,17 +87,17 @@ body {
     width:11%;
     height:15%;
 }
-
+/* container to edit/delete/create forms
+*/
 .container1 {
-
-    position:center;
-    margin: 4%;
-    padding: 3%;
-    display:inline-block;
+    margin: 1%;
+    padding: 4%;
+    display: inline-block;
     width: fit-content;
     height: fit-content;
-    margin-left:65%;
-    background-color: #efecd6;
+    margin-top: 22%;
+    margin-left: 55%;
+    background-color: #c3e6c0;
     border-radius: 3%;
 }
 
@@ -104,54 +105,42 @@ body {
 /*Edit Couse Background area*/
 
 .backgroundphoto {
-   margin-left: 4%;
-    margin-right: 5%;
-    border-radius: 2%;
-    background-image: url(edit.webp);
+    background-image: url(Desk-Office.jpg);
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+   
+    
 }
 
 
-    .backgroundphotodetails {
-        background-image: url(studendsida1.jpg);
-        background-size: cover;
-        padding:50px 50px 50px 50px;
-       
-    }
-
-    /*.student {
-    background-image: url(studendsida1.jpg);
+.backgroundphotodetails {
+    background-color: #629f8c;
+    padding: 50px 50px 50px 148px;
+    background-image: url(details1.jpg);
     background-size: cover;
-    border-style:groove;
-    border-width:medium;
+}
 
-    
+/*.TeacherBackgroundPhoto {
+    background-image: url(marble2.png);
+    background-size: cover;
 }*/
+/*3 rectangules content student sida
+*/
+.current {
+    margin: 3%;
+    padding: 5%;
+    font-size: 25px;
+    margin-left: 15%;
+    margin-right: 15%;
+    background-color: #c3e6c0;
+    align-content: center;
+    width: 100%;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
+}
 
-
-
-    .Activity {
-        background-color: aquamarine;
-        width: 10%;
-        height: 20%;
-        padding-left: 50%;
-    }
-
-
-    .current {
-        margin-left: 3%;
-        /*background-color: hsl(218, 81%, 85%);*/
-        background: repeating-linear-gradient(90deg, hsl(218, 71%, 95%), hsl(218, 51%, 75%),hsl(218, 71%, 95%) );
-        font-family: Century Gothic;
-        border-radius: 11%;
-        align-content: center;
-        width: 20%;
-        border-block-style: groove;
-    }
-
-    /*.navigator{
-    align-content:center;
-
-}*/
 
     .undernav {
         background-color: white;
@@ -162,3 +151,96 @@ body {
         border-radius: 11%;
     }
 
+
+.student {
+  
+    margin-block:2%;
+    border-radius:3%;
+    width:fit-content;
+}
+/*background for studentsida
+*/
+.studentsida {
+    /*   background-image: url(studentsida3.jfif);
+    background-size: cover;
+*/
+
+}
+
+/*    wellcome datalist the beginning color-profile the page*/
+
+.wellcome {
+   
+    padding:1%;
+    margin-inline-start:0%;
+    margin-inline-end:0%;
+    text-align:center;
+    border-block:groove;
+    background-color:whitesmoke;
+    
+}
+/*back button content documents sida
+*/.doucumentsback {
+    
+    padding: 1%;
+    font-size: larger;
+    font-style: italic;
+    font-weight: 600;
+    background: repeating-linear-gradient( #c3e6c0, #c3e6c0 );
+    margin:1%;
+    width:15%;
+    margin-top:1%;
+    margin-right:3%;
+    margin-left:58%;
+    margin-bottom:15%;
+  }
+
+/*  no assignments alert
+*/.assignments {
+    margin: 1%;
+    padding: 3%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 0%;
+    margin-left: 56%;
+    background-color: #c3e6c0;
+    border-radius: 3%;
+    font-size:larger;
+  }
+
+/*  user info near logout button
+*/  .hellouser{
+     margin-inline-start:700px;
+    }
+
+.NoModules {
+    margin: 1%;
+    padding: 5%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 2%;
+    margin-left: 28%;
+    background-color: #c3e6c0;
+    font-size: larger;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
+}
+
+.docbutton {
+    margin: 1%;
+    padding: 1%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 1%;
+    margin-left: 40%;
+    background-color: #c3e6c0;
+    font-size: larger;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
+    margin-bottom:0%;
+}
