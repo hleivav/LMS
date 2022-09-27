@@ -9,9 +9,11 @@ using LMS.Core.Entities;
 using LMS.Data;
 using LMS.Data.Data;
 using LMS.Core.Entities.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class ActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;

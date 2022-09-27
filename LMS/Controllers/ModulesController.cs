@@ -10,9 +10,11 @@ using LMS.Data;
 using LMS.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using LMS.Core.Entities.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
