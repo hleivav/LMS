@@ -348,7 +348,7 @@ namespace LMS.Web.Controllers
              var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Documents", FormFile.FileName);
             // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FormFile.FileName);
 
-            if (FileExist(path)){ Console.WriteLine("existerar"); }
+           
 
             using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
             {
@@ -436,16 +436,6 @@ namespace LMS.Web.Controllers
 
 
         //}
-        public bool FileExist(string testFile) 
-        {
-            string wwwPath = _hostingEnv.WebRootPath;
-            string[] filePaths = Directory.GetFiles(wwwPath + "/documents/");
-            foreach (var item in filePaths)
-            {
-              if (item== testFile) { return true; }
-              
-            }
-            return false;
-        }
+      
     } 
 }
