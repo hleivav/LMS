@@ -3,52 +3,19 @@
 
 <div class="row pb-3">
     <div class="col float-start">
-          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
-           New Module
-          </button>
-          
-       <div class="collapse" id="createModule">
-          <div class="card card-body">         
-              <div class="card" style="width: 18rem;">
-                  <div class="card-body">     
-                      <div class="row">
-                         <div class="col">
-                           <form asp-controller="Courses" asp-action="CreateModule">
-                               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                               <input type="hidden" asp-for="@Model.Id" />
-                                  <div class="form-group">
-                                     <label asp-for="ModuleName" class="control-label"></label>
-                                     <input asp-for="@Model.ModuleName" class="form-control" />
-                                     <span asp-validation-for="ModuleName" class="text-danger"></span>
-                                  </div>
-                                  <div class="form-group">
-                                    <label asp-for="ModuleDescription" class="control-label"></label>
-                                    <input asp-for="@Model.ModuleDescription" class="form-control" />
-                                    <span asp-validation-for="ModuleDescription" class="text-danger"></span>
-                                    </div>
-                                 <div class="form-group">
-                                   <label asp-for="ModuleStartDate" class="control-label"></label>
-                                   <input asp-for="@Model.ModuleStartDate" class="form-control" />
-                                   <span asp-validation-for="ModuleStartDate" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                  <label asp-for="ModuleEndDate" class="control-label"></label>
-                                  <input asp-for="@Model.ModuleEndDate" class="form-control" />
-                                  <span asp-validation-for="ModuleEndDate" class="text-danger"></span>
-                                </div>
-                                <div class="form-group pt-3">
-                                  <input type="submit" value="Save" class="btn btn-primary" />
-                                </div>
-                         </form>
-                        </div>
-                      </div>                   
-                  </div>
-              </div>
-          </div>
-         </div>
+      
        </div>
      </div>
      
+    <div class="text-center p-3" style="color: #293a7d;">
+         
+    <h3 style="background-color: #a4d6c6; padding:3%; border-radius:5%; ">Modules With Related Activities </h3>
+
+    </div>
+
+ <div class="col-row-12">
+   
+
 @if (TempData["Message"] != null)
 {
 <div class="row pt-2 pb-2">
@@ -59,9 +26,7 @@
         </div>
     </div>
 } 
-     <div class="text-center pb-5">
-         <h3>Modules And Related Activities </h3>
-     </div>
+     
 @{
     int i = 1;
     string str= "iOne";
@@ -105,7 +70,7 @@
                         }
                     }
                     <div class="col float-end pt-5">
-                         <a class="btn btn-primary" asp-controller="Activities" asp-action="Create"
+                         <a class="btn btn-success" asp-controller="Activities" asp-action="Create"
                          asp-route-id="@moduleName.Id" asp-route-forwardId="@Model.ForwardCourseId">New activity</a> 
                     </div>
                    </div>
@@ -113,7 +78,7 @@
               <div class="row mt-0">
                   <div class="col-6 ">
                      <div class="float-start">                       
-                         <a class="btn btn-primary" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id"
+                         <a class="btn btn-success" asp-controller="Modules" asp-action="Edit" asp-route-id="@moduleName.Id"
                          asp-route-forwardId="@Model.ForwardCourseId">Edit</a> 
                           <a class="btn btn-danger" asp-controller="Modules" asp-action="Delete"
                          asp-route-id="@moduleName.Id" asp-route-forwardId="@Model.ForwardCourseId">Delete</a> 
@@ -141,7 +106,7 @@
 
   <div class="col-lf-6 p-3  h-md-100">
     <div class="col text-start">
-          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
+          <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#createModule" aria-expanded="false" aria-controls="createModule">
            New Module <i class="fa fa-plus-circle"></i>
           </button>
           
@@ -175,7 +140,7 @@
                                   <span asp-validation-for="@Model.ModuleEndDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group pt-3">
-                                  <input type="submit" value="Save" class="btn btn-primary "/> <i class="fa fa-check"></i>
+                                  <input type="submit" value="Save" class="btn btn-success "/> <i class="fa fa-check"></i>
                                 </div>
                          </form>
                         </div>

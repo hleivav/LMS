@@ -13,14 +13,15 @@
         </div>
     </div>
 }
-<div class="pt-5">
- <h3>Create course</h3>
- </div>
+<section class="backgroundphoto">
+<div class="container1 inline-block">
+
+<h1 style="color: #293a7d;">Create a course </h1>
 
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="col-md-12">
+    <div class="">
         <form asp-controller="Courses" asp-action="CreateCourse">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -42,17 +43,16 @@
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group pt-5">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            </div><br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />|
+                 <button class="btn btn-outline-success "> <a asp-action="IndexTeacher">Back to teacher</a></button>
             </div>
         </form>
     </div>
 </div>
-
-<div class="pt-5">
-    <a asp-action="IndexTeacher">Back to teacher</a>
 </div>
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
