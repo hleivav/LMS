@@ -16,11 +16,11 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
       <div>
-        <p class="display-6   ls-tigh wellcome" style="color:#a4d6c6; font-family: Century Gothic;">Welcome to Lexicon,
+        <p class="display-6   ls-tigh wellcome" style="color:#629f8c; font-family: Century Gothic;">Welcome to Lexicon,
         you are logged in as a student!</p>
       </div>
 
-      <button class= "btn btn-outline-success " style="justify-content: center;">
+      <button class= "btn btn-outline-success docbutton " style="justify-content: center;">
           <a asp-action="StudentDocuments">Go To Documents <i class="fa fa-file"></i></a>
       </button>
 
@@ -63,7 +63,7 @@
 
                 @if (start>DateTime.Now | end<DateTime.Now)
                 {
-                 <p>You have no modules at present</p> 
+                 <p class="NoModules">You have no modules at present</p> 
                 }
                            
                 @foreach (var item in Model.ListOfCourses.Where(m => m.Id == courseId).FirstOrDefault().Modules)

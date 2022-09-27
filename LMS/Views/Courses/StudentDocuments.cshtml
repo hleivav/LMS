@@ -42,14 +42,11 @@
     }
 </table>
 *@
+<section class="backgroundphoto">
+<div class=" row-col-6 container1 ">
 
-
-<div class="row">
-    <div class="col-2"></div>
-    <div class="col-6">Assignments</div>
-</div>
-
-
+<h1 style="color: #293a7d;">Assignments</h1>
+ 
 
 @{
     bool test = false;
@@ -114,28 +111,24 @@
                 <p>Assignment Returned</p>
                 <br />
             }
-           
-           
-            
-                test = true;
+            test = true;
         }
-            
-       
         
-
-
-
     }
 
 </div>
 
+<div>
 
 @if (test==false)
 {
-    <p>No Assignments today.</p>
+    <div class="row">
+    <p class="col-12 assignments ">No Assignments today.</p>
+    </div>
 }
-<br />
-<div class="row">
-           <div class="col-2"></div>
-           <div class="col-6"><a asp-action="IndexStudent">Back to Homepage</a></div>
+    <div class="row">
+    <button class="col-12 doucumentsback btn btn-outline-success"><a asp-action="IndexStudent">Back to Homepage</a></button>
+    </div>
 </div>
+
+</section>

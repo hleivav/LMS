@@ -3,37 +3,40 @@
 @{
     ViewData["Title"] = "Delete";
 }
-<div class="pt-5">
-    <h3>Are you sure you want to delete this module?</h3>
-</div>
+<section class="backgroundphoto">
+<div class="container1 inline-block">
 
- <hr />
+<h1 style="color: #293a7d;">Delete this module </h1>
+
+
+<hr />
 <div>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
-        </dd>
+        </dd></span>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
-        </dd>
+        </dd></span>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
-        </dd>
+        </dd></span>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
+        </dt><span>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
-        </dd>
+        </dd></span>
     </dl>
     
     <form asp-controller="Modules" asp-action="Delete">
@@ -41,7 +44,10 @@
         <input type="submit" value="Delete" class="btn btn-danger" /> 
     </form>
 
-    <div class="pt-5">
-        <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId">Back to Modules and ativities</a>
+    <div class="pt-2">
+        <button class="btn btn-outline-danger"><a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId">Back to modules and ativities</a></button>
 </div>
 </div>
+
+</div>
+</section>

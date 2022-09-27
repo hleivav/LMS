@@ -6,7 +6,6 @@ html {
 
     html {
         font-size: 16px;
-        background-color: hsl(218, 71%, 95%);
         font-family: Century Gothic;
     }
 
@@ -49,7 +48,6 @@ body {
 .footer {
    
     width: 90%;
-    /*outline-style: groove;*/
     text-align: center;
     text-decoration: overline;
     margin-inline-start: 6%;
@@ -73,7 +71,7 @@ body {
 
 .teachertable {
     background-color: white;
-    background: repeating-linear-gradient(#cff1e6,#a4d6c6,#a4d6c6,#cff1e6);
+    background: repeating-linear-gradient(#c3e6c0,#cff1e6,white,#c3e6c0);
     font-family: Century Gothic;
     border-block: double;
     border-left-style: double;
@@ -89,29 +87,24 @@ body {
     width:11%;
     height:15%;
 }
-
+/* container to edit/delete/create forms
+*/
 .container1 {
-
-    
-    margin: 11%;
+    margin: 1%;
     padding: 4%;
-    display:inline-block;
+    display: inline-block;
     width: fit-content;
     height: fit-content;
-    margin-top:22%;
-    margin-left:55%;
+    margin-top: 22%;
+    margin-left: 55%;
     background-color: #c3e6c0;
     border-radius: 3%;
-    
 }
 
 
 /*Edit Couse Background area*/
 
 .backgroundphoto {
-    /* margin-left: 4%;
-    margin-right: 5%;
-    border-radius: 2%;*/
     background-image: url(Desk-Office.jpg);
     height: 100%;
     width: 100%;
@@ -123,39 +116,31 @@ body {
 
 .backgroundphotodetails {
     background-color: #629f8c;
-    padding: 50px 50px 50px 150px;
+    padding: 50px 50px 50px 148px;
+    background-image: url(details1.jpg);
+    background-size: cover;
 }
 
-   
-
-
-
-   /* .Activity {
-        background-color: aquamarine;
-        width: 10%;
-        height: 20%;
-        padding-left: 50%;
-    }
+/*.TeacherBackgroundPhoto {
+    background-image: url(marble2.png);
+    background-size: cover;
+}*/
+/*3 rectangules content student sida
 */
-
 .current {
     margin: 3%;
     padding: 5%;
     font-size: 25px;
     margin-left: 15%;
     margin-right: 15%;
-    background: repeating-linear-gradient(#cff1e6,#a4d6c6,#a4d6c6,#cff1e6 );
-    font-family: Century Gothic;
-    border-radius: 3%;
+    background-color: #c3e6c0;
     align-content: center;
     width: 100%;
-    border-block-style: groove;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
 }
 
-    /*.navigator{
-    align-content:center;
-
-}*/
 
     .undernav {
         background-color: white;
@@ -173,19 +158,89 @@ body {
     border-radius:3%;
     width:fit-content;
 }
-
+/*background for studentsida
+*/
 .studentsida {
-    background-image: url();
+    /*   background-image: url(studentsida3.jfif);
+    background-size: cover;
+*/
+
 }
 
 /*    wellcome datalist the beginning color-profile the page*/
 
 .wellcome {
-    background-color: #629f8c;
-    padding:2%;
-    margin-inline-start:5%;
-    margin-inline-end:6%;
+   
+    padding:1%;
+    margin-inline-start:0%;
+    margin-inline-end:0%;
     text-align:center;
     border-block:groove;
+    background-color:whitesmoke;
     
+}
+/*back button content documents sida
+*/.doucumentsback {
+    
+    padding: 1%;
+    font-size: larger;
+    font-style: italic;
+    font-weight: 600;
+    background: repeating-linear-gradient( #c3e6c0, #c3e6c0 );
+    margin:1%;
+    width:15%;
+    margin-top:1%;
+    margin-right:3%;
+    margin-left:58%;
+    margin-bottom:15%;
+  }
+
+/*  no assignments alert
+*/.assignments {
+    margin: 1%;
+    padding: 3%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 0%;
+    margin-left: 56%;
+    background-color: #c3e6c0;
+    border-radius: 3%;
+    font-size:larger;
+  }
+
+/*  user info near logout button
+*/  .hellouser{
+     margin-inline-start:700px;
+    }
+
+.NoModules {
+    margin: 1%;
+    padding: 5%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 2%;
+    margin-left: 28%;
+    background-color: #c3e6c0;
+    font-size: larger;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
+}
+
+.docbutton {
+    margin: 1%;
+    padding: 1%;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 1%;
+    margin-left: 40%;
+    background-color: #c3e6c0;
+    font-size: larger;
+    border-block-style: double;
+    border-left-style: double;
+    border-right-style: double;
+    margin-bottom:0%;
 }
