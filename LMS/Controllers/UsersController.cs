@@ -40,6 +40,29 @@ namespace LMS.Web.Controllers
                 return NotFound();
             }
 
+            ///////////////////tillbaka till rätt flik////////////////
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfStudents = (List<User>)resStudent,
+            };
+
+
+
+            foreach (var student in resStudent)
+            {
+                if (student.Id == id)
+                {
+                    TempData["Origin"] = "op3";
+                    break;
+                }
+                else
+                {
+                    TempData["Origin"] = "op2";
+                }
+            }
+            ////////////////////////////////////////////////////
+
             var Users = await _context.Users
                 .Include(u => u.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -51,28 +74,78 @@ namespace LMS.Web.Controllers
             return View(Users);
         }
 
-        // GET: Userss/Create
-        public IActionResult Create()
+        // GET: Users Teacher/Create
+        public IActionResult CreateTeacher()
         {
+           
+            
+            return View();
+        }
+
+        public IActionResult CreateMyStudent()
+        {
+
+
+
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Description");
             return View();
         }
+
 
         // POST: Userss/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,CourseId,Id,UsersName,NormalizedUsersName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User Users)
+        public async Task<IActionResult> CreateTeacher(UserViewModel userViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(Users);
+                var user = new User();
+                user.FirstName = userViewModel.FirstName;
+                user.LastName = userViewModel.LastName;
+                user.Email = userViewModel.Email;
+                user.UserName = userViewModel.Email;
+                //user.PasswordHash = userViewModel.Password;
+                string userPWD = "GetNewPassword!123";
+                await userManager.CreateAsync(user, userPWD);
+                await userManager.AddToRoleAsync(user, "Teacher");
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = "Teacher added";
+                return Redirect("/Courses/IndexTeacher");
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Description", Users.CourseId);
-            return View(Users);
+            catch (Exception)
+            {
+                TempData["Message"] = "Teacher exist,Check Email";
+                return Redirect("/Courses/IndexTeacher");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateStudent(UserViewModel userViewModel)
+        {
+            try
+            {
+                var user = new User();
+                user.FirstName = userViewModel.FirstName;
+                user.LastName = userViewModel.LastName;
+                user.Email = userViewModel.Email;
+                user.UserName = userViewModel.Email;
+                user.CourseId = userViewModel.CourseId;
+                //user.PasswordHash = userViewModel.Password;
+                string userPWD = "GetNewPassword!123";
+                await userManager.CreateAsync(user, userPWD);
+                await userManager.AddToRoleAsync(user, "Student");
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Student added";
+                return Redirect("/Courses/IndexTeacher");
+            }
+            catch (Exception)
+            {
+                TempData["Message"] = "Student exist. Check Email";
+                return Redirect("/Courses/IndexTeacher");
+            }
         }
 
         // GET: Users/Edit/5
@@ -125,7 +198,7 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,CourseId,Id,UsersName,NormalizedUsersName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User Users)
+        public async Task<IActionResult> Edit(int id,  User Users)
         {
             if (id != Users.Id)
             {
@@ -136,7 +209,16 @@ namespace LMS.Web.Controllers
             {
                 try
                 {
-                    _context.Update(Users);
+                    //_context.Update(Users);
+                    //await _context.SaveChangesAsync();
+
+                    var userToChange2 = await userManager.FindByEmailAsync(Users.Email);
+                    userToChange2.FirstName = Users.FirstName;
+                    userToChange2.LastName = Users.LastName;
+                    userToChange2.Email = Users.Email;
+                    userToChange2.PhoneNumber = Users.PhoneNumber;
+
+                    await userManager.UpdateAsync(userToChange2);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -167,6 +249,30 @@ namespace LMS.Web.Controllers
                 return NotFound();
             }
 
+
+            ///////////////////tillbaka till rätt flik////////////////
+            var resStudent = await userManager.GetUsersInRoleAsync("Student");
+            var indexViewModel = new IndexViewModel()
+            {
+                ListOfStudents = (List<User>)resStudent,
+            };
+
+
+
+            foreach (var student in resStudent)
+            {
+                if (student.Id == id)
+                {
+                    TempData["Origin"] = "op3";
+                    break;
+                }
+                else
+                {
+                    TempData["Origin"] = "op2";
+                }
+            }
+            ////////////////////////////////////////////////////
+            
             var Users = await _context.Users
                 .Include(u => u.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -194,7 +300,9 @@ namespace LMS.Web.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("IndexTeacher","Courses");
+
         }
 
         private bool UsersExists(int id)

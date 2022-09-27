@@ -5,8 +5,17 @@
     ViewData["Title"] = "Home Page";
     string activeTab = (string)TempData["Origin"];
 
-    
+ }
 
+ @if (TempData["Message"] != null)
+{
+<div class="row pt-2 pb-2">
+        <div class="col-12">
+           <div class="alert alert-info text-center">
+              <strong>@TempData["Message"]</strong>
+           </div>
+        </div>
+    </div>
 }
 
 
