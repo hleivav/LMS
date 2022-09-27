@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using LMS.Core.Entities;
 using LMS.Data;
 using LMS.Data.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class DocumentsController : Controller
     {
         private readonly ApplicationDbContext _context;
