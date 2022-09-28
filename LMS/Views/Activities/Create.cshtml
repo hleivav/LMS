@@ -9,9 +9,10 @@
 
 <h3 style="color: #293a7d;">Create a new activity</h3>
 <hr />
+<form asp-controller="Activities" asp-action="Create">
 <div class="row">
     <div class="col-md-12">
-        <form asp-controller="Activities" asp-action="Create">
+        @*<form asp-controller="Activities" asp-action="Create">*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.ModuleId" />
             <input type="hidden" asp-for="@Model.ForwardCourseId" />
@@ -46,8 +47,14 @@
             <div class="row p-1  float-End">
                    <input class="form-control" type="file" id="formFile">
             </div>
-
-  <form asp-controller="Activities" asp-action="Create">
+            <div class="pt-3">
+                   <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="pt-5">
+               <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.ForwardCourseId">Back to Modules and ativities</a>
+            </div>
+            </form>
+  @*<form asp-controller="Activities" asp-action="Create">
 <div class="row pt-3">
     <div class="col-6">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -97,7 +104,7 @@
             </div> 
         </div>
     </div>
-</div>
+</div>*@
 
 </div>
 
