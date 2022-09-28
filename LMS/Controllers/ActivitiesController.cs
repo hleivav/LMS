@@ -9,9 +9,11 @@ using LMS.Core.Entities;
 using LMS.Data;
 using LMS.Data.Data;
 using LMS.Core.Entities.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Web.Controllers
 {
+    [Authorize]
     public class ActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -94,12 +96,7 @@ namespace LMS.Web.Controllers
         // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(int id, int forwardId)
         {
-            //if (id == null || _context.Activity == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var activity = await _context.Activity.FindAsync(id);
+           var activity = await _context.Activity.FindAsync(id);
             ActivityViewModel activityViewModel = new ActivityViewModel()
             {
                 Id = id,
@@ -124,7 +121,7 @@ namespace LMS.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, /*[Bind("Id,Name,Description,StarDate,EndDate")]*/ ActivityViewModel activity)
+        public async Task<IActionResult> Edit(int id, ActivityViewModel activity)
         {
             try
                 {

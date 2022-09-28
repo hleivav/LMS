@@ -128,10 +128,10 @@ body {
 /*3 rectangules content student sida
 */
 .current {
-    margin: 3%;
-    padding: 5%;
+    margin: 7%;
+    padding: 3%;
     font-size: 25px;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-right: 15%;
     background-color: #c3e6c0;
     align-content: center;
@@ -221,7 +221,7 @@ body {
     width: fit-content;
     height: fit-content;
     margin-top: 2%;
-    margin-left: 28%;
+    margin-left: 5%;
     background-color: #c3e6c0;
     font-size: larger;
     border-block-style: double;
